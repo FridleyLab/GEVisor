@@ -28,7 +28,15 @@ ui = dashboardPage(
         tabItems(
             tabItem(tabName = 'import',
                     h1("GEVisor", align="center"),
-                    
+                    fluidRow(
+                      column(width = 6,
+                             fileInput("ge_data", "Choose Gene Expression",
+                                       multiple = FALSE,
+                                       accept = c(c("csv", "xlsx"),
+                                                  "Gene Expression Data",
+                                                  c(".csv", ".xlsx")))
+                      ),
+                    )
             ),
             
             tabItem(tabName = 'visualization',
