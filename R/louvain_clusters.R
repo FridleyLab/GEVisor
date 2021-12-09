@@ -21,6 +21,7 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   SeuratObj = Seurat::RunPCA(SeuratObj, features=Seurat::VariableFeatures(SeuratObj))
   SeuratObj = Seurat::FindNeighbors(SeuratObj, dims=1:npcs)
   SeuratObj = Seurat::FindClusters(SeuratObj, resolution=r)
+  SeuratObj = Seurat::RunUMAP(SeuratObj, dims=1:npcs)
   
   cluster_col = tibble::tibble(roi=names(Seurat::Idents(SeuratObj)), cluster=Seurat::Idents(SeuratObj))
   
