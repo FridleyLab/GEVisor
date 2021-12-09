@@ -9,5 +9,15 @@
 #summary_data_merged = merge(clinical_data, summary_data, by = "deidentified_id")
 
 shinyServer(function(input, output) {
-  
+  ge_data = reactive({
+    if(is.null(input$ge_data_input)){
+      return()
+      }
+    df = ffread(infile$datapath, check.names = FALSE, data.table = FALSE)
+    return(df)
+  })
+
+  output$ge_data_preview = renderTable({
+    head(ge_data(), n = 15L)
+  })
 })
