@@ -56,7 +56,7 @@ ui = dashboardPage(
                     fluidRow(
                       column(width = 6),
                       column(width = 6,
-                             imageOutput("plot_image_preview"),
+                             #imageOutput("plot_image_preview"),
                              )
                     )
                     

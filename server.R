@@ -46,11 +46,7 @@ shinyServer(function(input, output, session){
       width  = "50%"
     )}, deleteFile = T)
   
-  output$plot_image_preview <- renderImage({
-    req(ge_image())
-    list(
-      src    = normalizePath(file.path(ge_image())),
-      alt    = "tissue image",
-      width  = "50%"
-    )}, deleteFile = T)
+  output$plot_image_preview = renderImage({
+    
+  })
 })
