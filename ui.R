@@ -27,7 +27,8 @@ ui = dashboardPage(
         custom_blue,
         tabItems(
             tabItem(tabName = 'import',
-                    h1("GEVisor", align="center"),
+                    h1("GEVisor", align="left"),
+                    br(),
                     fluidRow(
                       column(width = 6,
                              fileInput("ge_data_input", "Choose Gene Expression",
