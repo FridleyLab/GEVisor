@@ -70,6 +70,10 @@ shinyServer(function(input, output, session){
   
   roi_df = reactive({
     roi_df = roi()$result_df
+<<<<<<< HEAD
+    
+=======
+>>>>>>> c166edb8402da0cb600916685a04f0c95ecc1a9f
     roi_df
   })
   
