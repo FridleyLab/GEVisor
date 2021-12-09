@@ -12,8 +12,14 @@ shinyServer(function(input, output) {
   ge_data = reactive({
     if(is.null(input$ge_data_input)){
       return()
-      }
-    df = ffread(infile$datapath, check.names = FALSE, data.table = FALSE)
+    }
+    ext = file_ext(input$ge_data_input)
+    validate(need(ext %in% c("csv", "xlsx"), "Please upload a CSV or XLSX file....."))
+    if(ext == "csv"){
+      df = fread(infile$datapath, check.names=F, data.table = F)
+    } else {
+      df = read.xlsx(infile$datapath, check.names = F)
+    }
     return(df)
   })
 
