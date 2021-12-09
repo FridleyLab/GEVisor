@@ -13,12 +13,12 @@ shinyServer(function(input, output) {
     if(is.null(input$ge_data_input)){
       return()
     }
-    ext = file_ext(input$ge_data_input)
+    ext = tools::file_ext(input$ge_data_input)
     validate(need(ext %in% c("csv", "xlsx"), "Please upload a CSV or XLSX file....."))
     if(ext == "csv"){
-      df = fread(infile$datapath, check.names=F, data.table = F)
+      df = fread(input$ge_data_input, check.names=F, data.table = F)
     } else {
-      df = read.xlsx(infile$datapath, check.names = F)
+      df = openxlsx::read.xlsx(input$ge_data_input, check.names = F, sheet = 1)
     }
     return(df)
   })

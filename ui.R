@@ -30,13 +30,20 @@ ui = dashboardPage(
                     h1("GEVisor", align="center"),
                     fluidRow(
                       column(width = 6,
-                             fileInput("ge_data", "Choose Gene Expression",
+                             fileInput("ge_data_input", "Choose Gene Expression",
                                        multiple = FALSE,
                                        accept = c(c("csv", "xlsx"),
                                                   "Gene Expression Data",
-                                                  c(".csv", ".xlsx")))
+                                                  c(".csv", ".xlsx"))),
+                             uiOutput("ge_data_preview")
                       ),
-                    )
+                      column(width = 6,
+                             fileInput("mif_image_input", "Choose MIF Image file",
+                                       multiple = FALSE,
+                                       accept = c(c("png", "tiff"),
+                                                  "MIF Image file",
+                                                  c(".png", ".tiff"))))
+                    ),
             ),
             
             tabItem(tabName = 'visualization',
