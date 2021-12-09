@@ -75,7 +75,7 @@ ui = dashboardPage(
                              plotOutput("roi_plot")
                              ),
                       column(width = 6,
-                             imageOutput("plot_image_preview"),
+                             #imageOutput("plot_image_preview"),
                              )
                     )
                     

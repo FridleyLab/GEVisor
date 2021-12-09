@@ -2,6 +2,7 @@
 # Script to run louvain clustering
 #
 
+<<<<<<< HEAD
 #countsfp = ('./data/hu_colon_count_results/Export3_BiologicalProbeQC.xlsx')
 #df = readxl::read_excel(countsfp, sheet=3)
 #nfeatures = 2000
@@ -10,6 +11,16 @@
 #x_col = 'ROICoordinateX'
 #y_col = 'ROICoordinateY'
 #df_spatial = readxl::read_excel(countsfp, sheet=1)
+=======
+# countsfp = ('./data/hu_colon_count_results/Export3_BiologicalProbeQC.xlsx')
+# df = readxl::read_excel(countsfp, sheet=3)
+# nfeatures = 2000
+# npcs = 30
+# roiid = 'SegmentDisplayName'
+# x_col = 'ROICoordinateX'
+# y_col = 'ROICoordinateY'
+# df_spatial = readxl::read_excel(countsfp, sheet=1)
+>>>>>>> 7cfc306405f3c5cead40e62a5a2fb3cb53289201
 # df_spatial = df_spatial[, c(roiid, x_col, y_col)]
 # col_pal = 'sunset'
 # 
