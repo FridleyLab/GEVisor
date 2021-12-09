@@ -46,13 +46,19 @@ ui = dashboardPage(
                                            accept = c(c("png", "tiff"),
                                                       "MIF Image file",
                                                       c(".png", ".tiff"))),
-                            imageOutput("image"),
+                            imageOutput("upload_image_preview"),
                             )
                           )
                     ),
             
             tabItem(tabName = 'visualization',
                     h1("Visualize Differential Gene Expression Data", align="center"),
+                    fluidRow(
+                      column(width = 6),
+                      column(width = 6,
+                             imageOutput("plot_image_preview"),
+                             )
+                    )
                     
             ),
             tabItem(tabName='clustering',
