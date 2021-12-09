@@ -14,7 +14,7 @@ Some useful packages that we can leverage when workin within R are:
 
 If you are versed in downloading packages from repositories other than CRAN, feel free to install spatialGE (`devtools::install_github()`) and edgeR and limma (`BiocManager::install()`), otherwise we can install them tomorrow.
 
-In addition to previously mentioned packages, we may explore implementation of the (SpaGCN)[https://github.com/jianhuupenn/SpaGCN] algorithm (Python) 
+In addition to previously mentioned packages, we may explore implementation of the [SpaGCN](https://github.com/jianhuupenn/SpaGCN) algorithm (Python) to detect differentially expressed genes. 
 
 GeoMx Data Downloads:
 1. Colon - [Download](https://external-soa-downloads-p-1.s3.us-west-2.amazonaws.com/hu_colon_count_results.tar.gz)
