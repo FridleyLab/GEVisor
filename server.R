@@ -86,4 +86,8 @@ shinyServer(function(input, output, session){
   output$roi_plot <- renderPlot({
     plot_clusters(roi_df(), color_pal())
   })
+  
+  output$cluster_umap = renderPlot({
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
+  })
 })

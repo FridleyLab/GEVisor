@@ -51,8 +51,14 @@ ui = dashboardPage(
                           )
                     ),
             
+            
             tabItem(tabName = 'visualization',
                     h1("Visualize Differential Gene Expression Data", align="center"),
+                    
+            ),
+            
+            tabItem(tabName='clustering',
+                    h1("Gene Expression Clustering", align="center"),
                     fluidRow(
                       column(width = 6, 
                              plotOutput("roi_plot"),
@@ -73,14 +79,9 @@ ui = dashboardPage(
                              ),
                       column(width = 6,
                              imageOutput("plot_image_preview"),
+                             plotOutput("cluster_umap")
                              )
                     )
-            ),
-            
-            
-            tabItem(tabName='clustering',
-                    h1("Gene Expression Clustering", align="center"),
-                    
             )
         )
     )
