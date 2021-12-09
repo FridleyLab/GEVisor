@@ -43,7 +43,9 @@ ui = dashboardPage(
                                        multiple = FALSE,
                                        accept = c(c("png", "tiff"),
                                                   "MIF Image file",
-                                                  c(".png", ".tiff"))))
+                                                  c(".png", ".tiff")))),
+                      ####### put here images call
+                      imageOutput("image"),
                     ),
             ),
             
