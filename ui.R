@@ -70,7 +70,7 @@ ui = dashboardPage(
                              
                              sliderInput("integer", "PC",
                                          #label = "npcs:",
-=======
+
                              plotOutput("roi_plot"),
                              sliderInput("r", "Resolution",
                                          min = 0.3, max = 1.2, value = 0.8
