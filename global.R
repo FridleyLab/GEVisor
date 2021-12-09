@@ -27,6 +27,7 @@ library(knitr)
 library(markdown)
 library(tools)
 library(openxlsx)
+library(readxl)
 
 custom_blue <- {shinyDashboardThemeDIY(
   ### general

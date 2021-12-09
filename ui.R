@@ -35,7 +35,7 @@ ui = dashboardPage(
                                        accept = c(c("csv", "xlsx"),
                                                   "Gene Expression Data",
                                                   c(".csv", ".xlsx"))),
-                             uiOutput("ge_data_preview")
+                             div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
                       ),
                       column(width = 6,
                              fileInput("mif_image_input", "Choose MIF Image file",

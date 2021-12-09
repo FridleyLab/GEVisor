@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
       df = fread(dat$datapath, check.names=F, data.table = F)
       print("csv")
     } else {
-      df = read.xlsx(dat$datapath, check.names = F, sheet = 1) %>% data.frame(check.names=F)
+      df = read_xlsx(dat$datapath, check.names = F, sheet = 1) %>% data.frame(check.names=F)
       print("excel")
     }
     #assign("df", df, envir = .GlobalEnv)
@@ -31,6 +31,6 @@ shinyServer(function(input, output) {
   output$ge_data_preview = renderTable({
     validate(need(nrow(ge_data()) > 1, "Please upload data....."))
     
-    head(ge_data(), n=50L)
-  })
+    head(ge_data(), n=15L)
+  }, width = "200px")
 })
