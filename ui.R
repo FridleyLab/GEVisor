@@ -28,15 +28,23 @@ ui = dashboardPage(
         tabItems(
             tabItem(tabName = 'import',
                     h1("GEVisor", align="center"),
-                    
+                    fluidRow(
+                      column(width = 6,
+                             fileInput("ge_data", "Choose Gene Expression",
+                                       multiple = FALSE,
+                                       accept = c(c("csv", "xlsx"),
+                                                  "Gene Expression Data",
+                                                  c(".csv", ".xlsx")))
+                      ),
+                    )
             ),
             
             tabItem(tabName = 'visualization',
-                    h1("Univariate Summary and Visualization", align="center"),
+                    h1("Visualize Differential Gene Expression Data", align="center"),
                     
             ),
             tabItem(tabName='clustering',
-                    h1("Multivariate Summary and Visualization", align="center"),
+                    h1("Gene Expression Clustering", align="center"),
                     
             )
         )
