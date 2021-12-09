@@ -53,4 +53,30 @@ shinyServer(function(input, output, session){
       alt    = "tissue image",
       width  = "50%"
     )}, deleteFile = T)
+  
+  roi = reactive({
+    df = ge_data()$targetCount
+    df_spatial = ge_data()$segment
+    nfeatures = input$Features
+    npcs = input$PC
+    r = input$r
+    
+    roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
+  })
+  
+  roi_df = reactive({
+    roi_df = roi$results_df
+    
+    roi_df
+  })
+  
+  color_pal <- reactive({
+    pallet = input$color_pallet
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df$cluster)))
+  })
+  
+  output$roi_plot <- renderPlot({
+    plot_clusters(roi_df, color_pal)
+  })
+  
 })
