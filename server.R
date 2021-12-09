@@ -34,48 +34,55 @@ shinyServer(function(input, output, session){
     if(is.null(input$mif_image_input)){
       return()
     }
-    else{
-      return(input$mif_image_input$datapath)}
+    im = magick::image_read(input$mif_image_input$datapath)
+    im2 = magick::image_resize(im, geometry = "1000x1000")
+      return(im2)
   })
   
-  output$upload_image_preview <- renderImage({
+  output$upload_image_preview <- renderPlot({
     req(ge_image())
-    list(
-      src    = normalizePath(file.path(ge_image())),
-      alt    = "tissue image",
-      width  = "50%"
-    )}, deleteFile = T)
+    plot(ge_image())
+    })
   
-  output$plot_image_preview <- renderImage({
-    req(ge_image())
-    list(
-      src    = normalizePath(file.path(ge_image())),
-      alt    = "tissue image",
-      width  = "50%"
-    )}, deleteFile = T)
+  # output$plot_image_preview <- renderImage({
+  #   req(ge_image())
+  #   list(
+  #     src    = normalizePath(file.path(ge_image())),
+  #     alt    = "tissue image",
+  #     width  = "50%"
+  #   )}, deleteFile = T)
   
   roi = reactive({
+    
     df = ge_data()$targetCount
     df_spatial = ge_data()$segment
-    nfeatures = input$Features
-    npcs = input$PC
+    nfeatures = input$features
+    npcs = input$npcs
     r = input$r
     
+    assign("ge_data", ge_data(), envir = .GlobalEnv)
     roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
+    return(roi)
   })
   
   roi_df = reactive({
     roi_df = roi()$result_df
+
     
+
     roi_df
   })
   
   color_pal <- reactive({
     pallet = input$color_pallet
-    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df$cluster)))
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
   })
   
   output$roi_plot <- renderPlot({
+
     plot_clusters(roi_df(), color_pal)
+
+    plot_clusters(roi_df(), color_pal())
+
   })
 })
