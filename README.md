@@ -21,3 +21,5 @@ GeoMx Data Downloads:
 2. Lymph - [Download](https://external-soa-downloads-p-1.s3.us-west-2.amazonaws.com/hu_lymph_node_count_results.tar.gz)
 
 For some reading about analyzing the spatial data GeoMx, here is a link to the vignette for [GeoMx analysis using spatialGE](https://fridleylab.github.io/spatialGE/articles/read_GeoMx_output.html)
+
+***
