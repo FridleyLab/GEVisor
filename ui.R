@@ -54,13 +54,34 @@ ui = dashboardPage(
             tabItem(tabName = 'visualization',
                     h1("Visualize Differential Gene Expression Data", align="center"),
                     fluidRow(
-                      column(width = 6),
+                      column(width = 6, 
+                             
+                             sliderInput("decimal", "Resolution",
+                                         label = "r:",
+                                         min = 0.3, max = 1.2, value = 0.8
+                             ),
+                             
+                             sliderInput("ineger", "Features",
+                                         label = "nfeatures:",
+                                         min = 1500, max = 3000, value = 2000
+                             ),
+                             
+                             
+                             sliderInput("integer", "PC",
+                                         label = "npcs:",
+                                         min = 20, max = 70, value = 30
+                             ),
+                             
+                             plotOutput("roi_plot")
+                             ),
                       column(width = 6,
                              imageOutput("plot_image_preview"),
                              )
                     )
                     
             ),
+            
+            
             tabItem(tabName='clustering',
                     h1("Gene Expression Clustering", align="center"),
                     
