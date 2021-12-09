@@ -65,25 +65,12 @@ shinyServer(function(input, output, session){
   
   output$image <- renderImage({
     req(ge_image())
-
-    # width = session$clientData$output_image_width
-    # height = session$clientData$output_image_height
-    # print(width)
-    # print(height)
-    # 
-    # pixelratio <- session$clientData$pixelratio
-    # outfile <- tempfile(fileext='.png')
-    # 
-    # png(outfile, width = width*pixelratio, height = height*pixelratio,
-    #     res = 72*pixelratio)
-    # hist(rnorm(input$obs))
-    # dev.off()
-    # 
     list(
       src    = normalizePath(file.path(ge_image())),
       alt    = "tissue image",
       width  = 400,
-      height = 400
-    )})
+      height = 400,
+    )
+  })
 
-})
+
