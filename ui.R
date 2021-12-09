@@ -35,6 +35,7 @@ ui = dashboardPage(
                                        accept = c(c("csv", "xlsx"),
                                                   "Gene Expression Data",
                                                   c(".csv", ".xlsx"))),
+                             uiOutput("sheet_picker"),
                              div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
                       ),
                       column(width = 6,
