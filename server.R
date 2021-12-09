@@ -8,7 +8,7 @@
 #summary_data = fread("example_data/deidentified_summary.csv", check.names = FALSE, data.table = FALSE)
 #summary_data_merged = merge(clinical_data, summary_data, by = "deidentified_id")
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output){
   sheet_names = reactive({
     validate(need(!is.null(input$ge_data_input), "Please upload data....."))
     if(file_ext(input$ge_data_input$datapath) == "csv"){
