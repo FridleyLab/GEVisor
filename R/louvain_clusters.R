@@ -24,8 +24,8 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   
   cluster_col = tibble::tibble(roi=names(Seurat::Idents(SeuratObj)), cluster=Seurat::Idents(SeuratObj))
   
-  result_df = dplyr::full_join(cluster_col, df_spatial, by=c('roi' = roiid))
-  result_df = result_df[, c(1,3,4,2)]
+  result_df = dplyr::full_join(cluster_col, df_spatial, by=c('roi' = "SegmentDisplayName"))
+  result_df = result_df[, c("roi","ROICoordinateX","ROICoordinateY","cluster")]
   colnames(result_df) = c('roi', 'x_pos', 'y_pos', 'cluster')
   
   results = list()
