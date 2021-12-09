@@ -65,7 +65,7 @@ shinyServer(function(input, output, session){
   })
   
   roi_df = reactive({
-    roi_df = roi$results_df
+    roi_df = roi$result_df
     
     roi_df
   })
@@ -78,5 +78,4 @@ shinyServer(function(input, output, session){
   output$roi_plot <- renderPlot({
     plot_clusters(roi_df, color_pal)
   })
-  
 })
