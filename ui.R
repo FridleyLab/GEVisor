@@ -23,6 +23,7 @@ ui = dashboardPage(
             tags$br()
             )
         ),
+    
     dashboardBody(
         custom_blue,
         tabItems(
@@ -31,24 +32,24 @@ ui = dashboardPage(
                     br(),
                     fluidRow(
                       column(width = 6,
-                             fileInput("ge_data_input", "Choose Gene Expression",
-                                       multiple = FALSE,
-                                       accept = c(c("csv", "xlsx"),
-                                                  "Gene Expression Data",
-                                                  c(".csv", ".xlsx"))),
-                             uiOutput("sheet_picker"),
-                             div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
-                      ),
+                               fileInput("ge_data_input", "Choose Gene Expression",
+                                         multiple = FALSE,
+                                         accept = c(c("xlsx"), #"csv", 
+                                                    "Gene Expression Data",
+                                                    c( ".xlsx"))),#".csv",
+                               #uiOutput("sheet_picker"),
+                               div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
+                        ),
                       column(width = 6,
-                             fileInput("mif_image_input", "Choose MIF Image file",
-                                       multiple = FALSE,
-                                       accept = c(c("png", "tiff"),
-                                                  "MIF Image file",
-                                                  c(".png", ".tiff", ".jpeg")))),
-                      ####### put here images call
-                      imageOutput("image"),
+                                 fileInput("mif_image_input", "Choose MIF Image file",
+                                           multiple = FALSE,
+                                           accept = c(c("png", "tiff"),
+                                                      "MIF Image file",
+                                                      c(".png", ".tiff"))),
+                            imageOutput("image"),
+                            )
+                          )
                     ),
-            ),
             
             tabItem(tabName = 'visualization',
                     h1("Visualize Differential Gene Expression Data", align="center"),
