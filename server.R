@@ -23,6 +23,12 @@ shinyServer(function(input, output, session){
     return(dfs)
   })
 
+  output$choose_slide = renderUI({
+    slides = ge_data()$segment$SlideName %>% unique()
+    selectInput("selected_slide", "Choose Slide ID to Analyse",
+                choices = slides,
+                selected = slides[1])
+  })
   
   output$ge_data_preview = renderTable({
     validate(need(nrow(ge_data()$segment) > 1, "Please upload data....."))
@@ -35,7 +41,7 @@ shinyServer(function(input, output, session){
       return()
     }
     im = magick::image_read(input$mif_image_input$datapath)
-    im2 = magick::image_resize(im, geometry = "1000x1000")
+    im2 = magick::image_resize(im, geometry = "1500x1500")
       return(im2)
   })
   
@@ -44,18 +50,15 @@ shinyServer(function(input, output, session){
     plot(ge_image())
     })
   
-  # output$plot_image_preview <- renderImage({
-  #   req(ge_image())
-  #   list(
-  #     src    = normalizePath(file.path(ge_image())),
-  #     alt    = "tissue image",
-  #     width  = "50%"
-  #   )}, deleteFile = T)
+  output$plot_image_preview <- renderPlot({
+    req(ge_image())
+    plot(ge_image())
+  })
   
   roi = reactive({
     
     df = ge_data()$targetCount
-    df_spatial = ge_data()$segment
+    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
     nfeatures = input$features
     npcs = input$npcs
     r = input$r
@@ -68,6 +71,11 @@ shinyServer(function(input, output, session){
   roi_df = reactive({
     roi_df = roi()$result_df
     roi_df
+  })
+  
+  de_markers = reactive({
+    #list of dataframes for the different clusters differentially expressed genes
+    tmp = louvain_markers(roi()$seuratobj)
   })
   
   color_pal <- reactive({

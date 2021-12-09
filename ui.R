@@ -37,7 +37,7 @@ ui = dashboardPage(
                                          accept = c(c("xlsx"), #"csv", 
                                                     "Gene Expression Data",
                                                     c( ".xlsx"))),#".csv",
-                               #uiOutput("sheet_picker"),
+                             uiOutput("choose_slide"),
                                div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
                         ),
                       column(width = 6,
@@ -68,11 +68,11 @@ ui = dashboardPage(
                              selectInput("color_pallet", "Choose Color Pallet",
                                          choices = c("imola" = "imola",
                                                      "discrete rainbow" = "discrete_rainbow",
-                                                     "Accent" = "accent"),
+                                                     "Accent" = "Accent"),
                                          selected = "imola")
                              ),
                       column(width = 6,
-                             #imageOutput("plot_image_preview"),
+                             imageOutput("plot_image_preview"),
                              )
                     )
             ),

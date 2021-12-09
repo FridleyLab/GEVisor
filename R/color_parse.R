@@ -7,6 +7,7 @@
 color_parse = function(color_pal=NULL, n_cats=NULL){
   # Get color palette and number of colors needed.
   # Get names of Khroma colors.
+  color_pal = gsub("_", " ", color_pal)
   khroma_cols = khroma::info()
   khroma_cols = khroma_cols$palette
   
