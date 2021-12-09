@@ -20,23 +20,14 @@ ui = dashboardPage(
             menuItem("Importing Data", tabName = 'import', icon = icon('upload')),
             menuItem("GE Visualization", tabName = 'visualization', icon = icon('angle-right')),
             menuItem("GE Clustering", tabName = 'clustering', icon = icon('angle-double-right')),
-            tags$br(),
-            fluidRow(column(12, align="center",
-                            tags$br(),
-                            tags$img(src = "moffitt-logo.png",
-                                     position = "absolute",
-                                     bottom = "25px",
-                                     width = "100px", 
-                                     height = "100px")
-                            )
-                     )
+            tags$br()
             )
         ),
     dashboardBody(
         custom_blue,
         tabItems(
             tabItem(tabName = 'import',
-                    h1("iTIME", align="center"),
+                    h1("GEVisor", align="center"),
                     
             ),
             
