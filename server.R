@@ -49,7 +49,6 @@ shinyServer(function(input, output) {
       alt    = "tissue image",
       width  = 400,
       height = 400
-    ))
+    )})
   })
   
-})
