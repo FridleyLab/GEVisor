@@ -7,12 +7,13 @@ If it is of interest to utilize R for parts of this project (mostly for the Shin
 
 Some useful packages that we can leverage when workin within R are:
 1. edgeR
-2. limma
-3. spatialGE
-4. Seurat
-5. tidyverse
+2. xCell
+3. limma
+4. spatialGE
+5. Seurat
+6. tidyverse
 
-If you are versed in downloading packages from repositories other than CRAN, feel free to install spatialGE (`devtools::install_github()`) and edgeR and limma (`BiocManager::install()`), otherwise we can install them tomorrow.
+If you are versed in downloading packages from repositories other than CRAN, feel free to install spatialGE (`devtools::install_github()`) and edgeR, xCell, and limma (`BiocManager::install()`), otherwise we can install them tomorrow.
 
 In addition to previously mentioned packages, we may explore implementation of the [SpaGCN](https://github.com/jianhuupenn/SpaGCN) algorithm (Python) to detect differentially expressed genes. 
 
