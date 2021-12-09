@@ -29,7 +29,7 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   colnames(result_df) = c('roi', 'x_pos', 'y_pos', 'cluster')
   
   results = list()
-  results[['resulds_df']] = results_df
+  results[['result_df']] = result_df
   results[['seuratobj']] = SeuratObj
-  return(result_df)
+  return(results)
 }
