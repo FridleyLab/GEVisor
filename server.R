@@ -33,4 +33,21 @@ shinyServer(function(input, output) {
     
     head(ge_data(), n=15L)
   }, width = "200px")
+  
+  ge_image = reactive({
+    if(is.null(input$mif_image_input)){
+      return()
+    }
+    else{
+      return(input$mif_image_input$datapath)}})
+  
+  
+  output$image <- renderImage({
+    req(ge_image())
+    list(
+      src    = normalizePath(file.path(ge_image())),
+      alt    = "tissue image",
+      width  = 400,
+      height = 400
+    )})
 })
