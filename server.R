@@ -48,6 +48,6 @@ shinyServer(function(input, output) {
       src    = normalizePath(file.path(ge_image())),
       alt    = "tissue image",
       width  = 400,
-      height = 400
+      height = 300
     )})
 })
