@@ -98,11 +98,7 @@ ui = dashboardPage(
           ),
           selected = "imola"
         ),
-<<<<<<< HEAD
-        # plotOutput("ge_plot"),
-=======
-        #plotOutput("ge_plot"),
->>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
+
         girafeOutput("ge_plot_interactive")
         
       ),
@@ -115,15 +111,10 @@ ui = dashboardPage(
           column(
             width = 6,
             downloadButton('downloadPlot', 'Download Plot'),
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             # plotOutput("roi_plot"),
 
-=======
-            plotOutput("roi_plot"),
->>>>>>> 58fe7f4b42bb98bfc4cc9fce01425b3b8a170348
-=======
->>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
+
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",

@@ -72,7 +72,7 @@ shinyServer(function(input, output, session){
   })
   
   
-<<<<<<< HEAD
+
   # output$ge_plot <- renderPlot({
   #   col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
   #   
@@ -83,22 +83,8 @@ shinyServer(function(input, output, session){
   #             )
   #   
   # })
-=======
-  output$ge_plot <- renderPlot({
-    validate(need(length(gene_names())>1, ""),
-             need(nrow(ge_data()$targetCount)>1, ""),
-             need(!is.null(color_pal()), ""))
-    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
-    
-    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
-              df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
-              gene = input$select_gene, 
-              col_pal = color_pal() 
-              )
-    
-  })
->>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
-  
+
+
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
     
@@ -203,32 +189,6 @@ shinyServer(function(input, output, session){
   })
   })
   
-
-  output$roi_plot <- renderPlot({
-<<<<<<< HEAD
-=======
-
-    # plot_clusters(roi_df(), color_pal)
-    ploting_roi()})
-
-
-  tooltip_selected <- reactive({
-    input$selected_tooltip
->>>>>>> 58fe7f4b42bb98bfc4cc9fce01425b3b8a170348
-    ploting_roi()
-  })
-<<<<<<< HEAD
-
-  
-=======
-  # output$roi_plot <- renderPlot({
-  # 
-  #   # plot_clusters(roi_df(), color_pal)
-  # 
-  #   plot_clusters(roi_df(), color_pal())
-  # 
-  # })
->>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
@@ -258,12 +218,8 @@ shinyServer(function(input, output, session){
   })
   
   output$cluster_umap = renderPlot({
-<<<<<<< HEAD
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3)
-=======
     validate(need(!is.null(roi()$seuratobj), ""))
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
->>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3)
   })
 
 #sandhya page
