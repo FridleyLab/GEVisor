@@ -197,13 +197,7 @@ shinyServer(function(input, output, session){
     plot_clusters(roi_df(), color_pal())
     
   })
-  output$downloadPlot <- downloadHandler(
-    filename = function() { paste(Sys.Date(), '.png', sep='') },
-    content = function(file) {
-      ggsave(file, plot = ploting_roi(), device = "png",
-             width = 7, height = 7, units = "in")
-    }
-  )
+  
   
   output$roi_plot_girafe <- renderGirafe({
     validate(need(nrow(roi_df())>1, ""),
@@ -217,10 +211,23 @@ shinyServer(function(input, output, session){
     })
   })
   
+  umapSeaurat <- reactive({
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    
+  })
+  
   output$cluster_umap = renderPlot({
     validate(need(!is.null(roi()$seuratobj), ""))
     Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
   })
+  
+  output$downloadPlot <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = umapSeaurat(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
 
 #sandhya page
   
