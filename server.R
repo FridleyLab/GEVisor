@@ -50,26 +50,35 @@ shinyServer(function(input, output, session){
     if(is.null(ge_data())){
       return()
     }
+    withProgress(message = "Generating Data List for Gene Menue ", value = 0,{
+      incProgress(0.59, detail = "Data for Genes....")
     ge_data()$targetCount %>% pull(TargetName) %>% unique() %>% sort()
-  })
+  }) })
   
   output$choose_gene = renderUI({
     validate(need(length(gene_names())>1, ""))
     #genes = de_markers() %>% pull(gene)
+    withProgress(message = "Generating Gene List ", value = 0,{
+      incProgress(0.53, detail = "Data for Genes Plot.....")
     selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
-  })
+  }) })
   
   de_markers = reactive({
+    withProgress(message = "Generating Data Sets for plotting ", value = 0,{
+      incProgress(0.33, detail = "Data for SeuratObj Plot.....")
     #list of dataframes for the different clusters differentially expressed genes
     tmp = louvain_markers(roi()$seuratobj)
     #assign("tmp", tmp, envir = .GlobalEnv)
     return(tmp)
   })
+  })
   
   color_pal <- reactive({
+    withProgress(message = "Choosing color pallet ", value = 0,{
+      incProgress(0.23, detail = "Choosing colors....")
     pallet = input$color_pallet
     col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  })
+  }) })
   
   
 
