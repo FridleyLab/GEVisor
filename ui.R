@@ -80,6 +80,19 @@ ui = dashboardPage(
         tabName = 'visualization',
         h1("Visualize Differential Gene Expression Data", align =
              "center"),
+        uiOutput("choose_gene"),
+        selectInput(
+          "color_pallet",
+          "Choose Color Pallet",
+          choices = c(
+            "imola" = "imola",
+            "discrete rainbow" = "discrete_rainbow",
+            "Accent" = "Accent",
+            "sunset" = "sunset"
+          ),
+          selected = "imola"
+        ),
+        plotOutput("ge_plot"),
         
       ),
       
@@ -89,14 +102,18 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
+<<<<<<< HEAD
             downloadButton('downloadPlot', 'Download Plot'),
             plotOutput("roi_plot"),
+=======
+            # plotOutput("roi_plot"),
+>>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
               "Resolution",
               min = 0.3,
-              max = 1.2,
+              max = 3.0,
               value = 0.8
             ),
             sliderInput(
@@ -122,17 +139,23 @@ ui = dashboardPage(
                 "Accent" = "Accent"
               ),
               selected = "imola"
-            )
+            ),
+            uiOutput("choose_tooltip"),
+            # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
           ),
           box(
             #id = "image_cluster_container",
             width = 6,
             column(
               width = 12,
-              imageOutput("plot_image_preview"),
+              imageOutput("plot_image_preview", inline = T),
               br(),
+<<<<<<< HEAD
               plotOutput("cluster_umap", inline = T)
               
+=======
+              plotOutput("cluster_umap")
+>>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
             )
           )
         )
