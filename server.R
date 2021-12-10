@@ -1,9 +1,11 @@
 
 #make reactive for maximum number of genes > set to max features
 #make reactive for maximum number of samples in filtered df > max - 1 for max npcs
+#make reactives progress bar active
 
 shinyServer(function(input, output, session){
-  
+
+#import data
   ge_data = reactive({
     if(is.null(input$ge_data_input)){
       return()
@@ -42,6 +44,42 @@ shinyServer(function(input, output, session){
     return(im2)
   })
   
+#visualize gene expression
+  
+  gene_names = reactive({
+    if(is.null(ge_data())){
+      return()
+    }
+    ge_data()$targetCount %>% pull(TargetName) %>% unique() %>% sort()
+  })
+  
+  output$choose_gene = renderUI({
+    selectInput('select_gene', "Select Gene to View", choices = de_markers() %>% pull(gene), multiple = F)
+  })
+  
+  de_markers = reactive({
+    #list of dataframes for the different clusters differentially expressed genes
+    tmp = louvain_markers(roi()$seuratobj)
+    assign("tmp", tmp, envir = .GlobalEnv)
+    return(tmp)
+  })
+  
+  color_pal <- reactive({
+    pallet = input$color_pallet
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
+  })
+  
+  
+  output$ge_plot <- renderPlot({
+    
+    expr_plot(df = ge_data()$segment, 
+              df_spatial = ge_data()$targetCount, 
+              gene = input$select_gene, 
+              col_pal = color_pal())
+    
+  })
+
+#clustering page
   ge_image2 = reactive({
     if(is.null(input$mif_image_input)){
       return()
@@ -87,22 +125,8 @@ shinyServer(function(input, output, session){
     roi_df
   })
   
-  de_markers = reactive({
-    #list of dataframes for the different clusters differentially expressed genes
-    tmp = louvain_markers(roi()$seuratobj)
-  })
-  
-  color_pal <- reactive({
-    pallet = input$color_pallet
-    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  })
-  
   output$roi_plot <- renderPlot({
-
-    plot_clusters(roi_df(), color_pal)
-
     plot_clusters(roi_df(), color_pal())
-
   })
   
   output$cluster_umap = renderPlot({

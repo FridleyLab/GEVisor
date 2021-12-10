@@ -80,6 +80,18 @@ ui = dashboardPage(
         tabName = 'visualization',
         h1("Visualize Differential Gene Expression Data", align =
              "center"),
+        uiOutput("choose_gene"),
+        selectInput(
+          "color_pallet",
+          "Choose Color Pallet",
+          choices = c(
+            "imola" = "imola",
+            "discrete rainbow" = "discrete_rainbow",
+            "Accent" = "Accent"
+          ),
+          selected = "imola"
+        ),
+        plotOutput("gePlot"),
         
       ),
       
@@ -111,16 +123,6 @@ ui = dashboardPage(
               max = 70,
               value = 30
             ),
-            selectInput(
-              "color_pallet",
-              "Choose Color Pallet",
-              choices = c(
-                "imola" = "imola",
-                "discrete rainbow" = "discrete_rainbow",
-                "Accent" = "Accent"
-              ),
-              selected = "imola"
-            )
           ),
           box(
             #id = "image_cluster_container",
