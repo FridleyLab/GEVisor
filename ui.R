@@ -101,7 +101,8 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
-            plotOutput("roi_plot"),
+            # plotOutput("roi_plot"),
+            girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
               "Resolution",
@@ -123,6 +124,18 @@ ui = dashboardPage(
               max = 70,
               value = 30
             ),
+            selectInput(
+              "color_pallet",
+              "Choose Color Pallet",
+              choices = c(
+                "imola" = "imola",
+                "discrete rainbow" = "discrete_rainbow",
+                "Accent" = "Accent"
+              ),
+              selected = "imola"
+            ),
+            uiOutput("choose_tooltip"),
+            # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
           ),
           box(
             #id = "image_cluster_container",
