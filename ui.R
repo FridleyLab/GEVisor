@@ -55,6 +55,22 @@ ui = dashboardPage(
                     h1("Visualize Differential Gene Expression Data", align="center"),
                     fluidRow(
                       column(width = 6, 
+
+                             
+                             sliderInput("decimal", "Resolution",
+                                         #label = "r:",
+                                         min = 0.3, max = 1.2, value = 0.8
+                             ),
+                             
+                             sliderInput("ineger", "Features",
+                                         #label = "nfeatures:",
+                                         min = 1500, max = 3000, value = 2000
+                             ),
+                             
+                             
+                             sliderInput("integer", "PC",
+                                         #label = "npcs:",
+
                              plotOutput("roi_plot"),
                              sliderInput("r", "Resolution",
                                          min = 0.3, max = 1.2, value = 0.8
@@ -63,6 +79,7 @@ ui = dashboardPage(
                                          min = 1500, max = 3000, value = 2000
                              ),
                              sliderInput("npcs", "PC",
+
                                          min = 20, max = 70, value = 30
                              ),
                              selectInput("color_pallet", "Choose Color Pallet",
