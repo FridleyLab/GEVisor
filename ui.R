@@ -111,8 +111,6 @@ ui = dashboardPage(
           column(
             width = 6,
             downloadButton('downloadPlot', 'Download Plot'),
-            #plotOutput("roi_plot"),
-            
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
