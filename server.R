@@ -74,10 +74,26 @@ shinyServer(function(input, output, session){
   output$ge_plot <- renderPlot({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
     
-    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel))), 
+    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
               df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
               gene = input$select_gene, 
-              col_pal = color_pal())
+              col_pal = color_pal() 
+              )
+    
+  })
+  
+  output$ge_plot_interactive <- renderGirafe({
+    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
+    
+    p1 <- expr_plot_interactive(
+      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
+      df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
+      gene = input$select_gene, 
+      col_pal = color_pal()
+      # tooltip = expr
+    )
+    
+    girafe(ggobj = p1)
     
   })
 
