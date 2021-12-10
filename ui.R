@@ -90,6 +90,7 @@ ui = dashboardPage(
           column(
             width = 6,
             plotOutput("roi_plot"),
+            girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
               "Resolution",

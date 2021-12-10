@@ -29,6 +29,7 @@ library(tools)
 library(openxlsx)
 library(readxl)
 library(magick)
+library(ggiraph)
 
 
 custom_blue <- {shinyDashboardThemeDIY(

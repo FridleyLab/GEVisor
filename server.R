@@ -108,6 +108,11 @@ shinyServer(function(input, output, session){
 
   })
   
+  output$roi_plot_girafe <- renderGirafe({
+    ## Can I call output$roi_plot again here instead of the plot_clusters() call?
+    girafe(ggobj = plot_clusters_interactive(roi_df(), color_pal())) 
+  })
+  
   output$cluster_umap = renderPlot({
     Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
   })
