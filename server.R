@@ -54,7 +54,8 @@ shinyServer(function(input, output, session){
   })
   
   output$choose_gene = renderUI({
-    selectInput('select_gene', "Select Gene to View", choices = de_markers() %>% pull(gene), multiple = F)
+    #genes = de_markers() %>% pull(gene)
+    selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
   })
   
   de_markers = reactive({
@@ -71,9 +72,10 @@ shinyServer(function(input, output, session){
   
   
   output$ge_plot <- renderPlot({
+    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
     
-    expr_plot(df = ge_data()$segment, 
-              df_spatial = ge_data()$targetCount, 
+    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel))), 
+              df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
               gene = input$select_gene, 
               col_pal = color_pal())
     

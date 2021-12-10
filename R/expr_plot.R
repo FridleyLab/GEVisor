@@ -22,11 +22,11 @@ expr_plot = function(df, df_spatial, gene, col_pal){
   
   p1=ggplot2::ggplot(data=expr) +
     #ggplot2::annotation_custom(img_obj, xmin=0, xmax=1) +
-    ggplot2::geom_point(ggplot2::aes(y=get(y_col), x=get(x_col), color=expr), size=3) +
+    ggplot2::geom_point(ggplot2::aes(y=ROICoordinateX, x=ROICoordinateY, color=expr), size=3) +
     ggplot2::scale_color_gradientn(colors=col_pal) +
     ggtitle(paste0('log_expr ', gene)) +
     ggplot2::theme_classic() + 
-    ggplot2::scale_y_reverse() +
+    #ggplot2::scale_y_reverse() +
     coord_equal()
   
   p1

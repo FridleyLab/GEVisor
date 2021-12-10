@@ -87,11 +87,12 @@ ui = dashboardPage(
           choices = c(
             "imola" = "imola",
             "discrete rainbow" = "discrete_rainbow",
-            "Accent" = "Accent"
+            "Accent" = "Accent",
+            "sunset" = "sunset"
           ),
           selected = "imola"
         ),
-        plotOutput("gePlot"),
+        plotOutput("ge_plot"),
         
       ),
       
