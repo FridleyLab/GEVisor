@@ -89,7 +89,7 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
-            plotOutput("roi_plot"),
+            # plotOutput("roi_plot"),
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
@@ -121,7 +121,9 @@ ui = dashboardPage(
                 "Accent" = "Accent"
               ),
               selected = "imola"
-            )
+            ),
+            uiOutput("choose_tooltip"),
+            # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
           ),
           box(
             #id = "image_cluster_container",

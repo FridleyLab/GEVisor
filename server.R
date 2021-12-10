@@ -85,9 +85,28 @@ shinyServer(function(input, output, session){
   roi_df = reactive({
     roi_df = roi()$result_df
 
-    
-
     roi_df
+  })
+  
+  output$choose_tooltip = renderUI({
+    res = roi_df()
+    markers = de_markers()
+    
+    topgenes = markers %>% 
+      group_by(cluster) %>% 
+      # arrange(p_val_adj, .by_group = TRUE) %>% 
+      slice_min(order_by = p_val_adj, n = 5, with_ties = F) %>% 
+      select(cluster, gene) %>% 
+      mutate(num = seq(n())) %>%
+      tidyr::spread(num, gene) %>%
+      tidyr::unite("Top DE genes", `1`:`5`, sep = ", ")
+    
+    
+    res = dplyr::full_join(res, topgenes, by='cluster')
+    col_names = colnames(res)
+    selectInput("selected_tooltip", "Choose Tooltip to be plotted",
+                choices = col_names,
+                selected = col_names[length(col_names)])
   })
   
   de_markers = reactive({
@@ -100,17 +119,20 @@ shinyServer(function(input, output, session){
     col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
   })
   
-  output$roi_plot <- renderPlot({
-
-    # plot_clusters(roi_df(), color_pal)
-
-    plot_clusters(roi_df(), color_pal())
-
+  # output$roi_plot <- renderPlot({
+  # 
+  #   # plot_clusters(roi_df(), color_pal)
+  # 
+  #   plot_clusters(roi_df(), color_pal())
+  # 
+  # })
+  tooltip_selected <- reactive({
+    input$selected_tooltip
   })
   
   output$roi_plot_girafe <- renderGirafe({
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal())) 
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip_selected())) 
   })
   
   output$cluster_umap = renderPlot({
