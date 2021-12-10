@@ -30,6 +30,7 @@ library(openxlsx)
 library(readxl)
 library(magick)
 library(ggiraph)
+library(reticulate)
 
 
 custom_blue <- {shinyDashboardThemeDIY(
