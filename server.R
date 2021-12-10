@@ -84,9 +84,6 @@ shinyServer(function(input, output, session){
   
   roi_df = reactive({
     roi_df = roi()$result_df
-
-    
-
     roi_df
   })
   

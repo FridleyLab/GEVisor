@@ -94,7 +94,7 @@ ui = dashboardPage(
               "r",
               "Resolution",
               min = 0.3,
-              max = 1.2,
+              max = 3.0,
               value = 0.8
             ),
             sliderInput(
@@ -127,9 +127,9 @@ ui = dashboardPage(
             width = 6,
             column(
               width = 12,
-              imageOutput("plot_image_preview"),
+              imageOutput("plot_image_preview", inline = T),
               br(),
-              plotOutput("cluster_umap", inline = T)
+              plotOutput("cluster_umap")
             )
           )
         )
