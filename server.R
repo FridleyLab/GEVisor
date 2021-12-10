@@ -198,6 +198,27 @@ shinyServer(function(input, output, session){
   })
   })
   
+<<<<<<< HEAD
+
+  output$roi_plot <- renderPlot({
+
+    # plot_clusters(roi_df(), color_pal)
+    ploting_roi()
+    })
+
+
+  tooltip_selected <- reactive({
+    input$selected_tooltip
+  })
+  # output$roi_plot <- renderPlot({
+  # 
+  #   # plot_clusters(roi_df(), color_pal)
+  # 
+  #   plot_clusters(roi_df(), color_pal())
+  # 
+  # })
+=======
+>>>>>>> ebebc83de911d17afe0bc8d7873ad1efa38c1aef
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
