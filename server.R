@@ -41,19 +41,39 @@ shinyServer(function(input, output, session){
       return()
     }
     im = magick::image_read(input$mif_image_input$datapath)
-    im2 = magick::image_resize(im, geometry = "1500x1500")
-      return(im2)
+    im2 = magick::image_resize(im, geometry = "500x500") %>%
+      image_write(tempfile(fileext='png'), format = 'png')
+    print(session$clientData$output$output_upload_image_preview_width)
+    #assign("session", session, envir = .GlobalEnv)
+    return(im2)
   })
   
-  output$upload_image_preview <- renderPlot({
-    req(ge_image())
-    plot(ge_image())
-    })
-  
-  output$plot_image_preview <- renderPlot({
-    req(ge_image())
-    plot(ge_image())
+  ge_image2 = reactive({
+    if(is.null(input$mif_image_input)){
+      return()
+    }
+    im = magick::image_read(input$mif_image_input$datapath)
+    im2 = magick::image_resize(im, geometry = "500x500") %>%
+      image_write(tempfile(fileext='png'), format = 'png')
+    print(session$clientData$output$output_upload_image_preview_width)
+    #assign("session", session, envir = .GlobalEnv)
+    return(im2)
   })
+  
+  output$upload_image_preview <- renderImage({
+    req(ge_image())
+    img = ge_image()
+    width  <- session$clientData$output_upload_image_preview_width
+    
+    list(src = img, contentType = "image/png")
+    }, deleteFile = T)
+  
+  output$plot_image_preview <- renderImage({
+    req(ge_image2())
+    img = ge_image2()
+    
+    list(src = img, contentType = "image/png")
+  }, deleteFile = T)
   
   roi = reactive({
     

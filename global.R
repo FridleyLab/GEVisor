@@ -28,6 +28,7 @@ library(markdown)
 library(tools)
 library(openxlsx)
 library(readxl)
+library(magick)
 
 
 custom_blue <- {shinyDashboardThemeDIY(
