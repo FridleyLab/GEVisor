@@ -18,7 +18,7 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   SeuratObj = Seurat::NormalizeData(SeuratObj)
   SeuratObj = Seurat::FindVariableFeatures(SeuratObj, nfeatures=nfeatures)
   SeuratObj = Seurat::ScaleData(SeuratObj, features=rownames(SeuratObj))
-  SeuratObj = Seurat::RunPCA(SeuratObj, features=Seurat::VariableFeatures(SeuratObj))
+  SeuratObj = Seurat::RunPCA(SeuratObj, features=Seurat::VariableFeatures(SeuratObj), npcs = npcs)
   SeuratObj = Seurat::FindNeighbors(SeuratObj, dims=1:npcs)
   SeuratObj = Seurat::FindClusters(SeuratObj, resolution=r)
   SeuratObj = Seurat::RunUMAP(SeuratObj, dims=1:npcs)
