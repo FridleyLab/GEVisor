@@ -88,7 +88,7 @@ ui = dashboardPage(
       
       tabItem(
         tabName = 'visualization',
-        h1("Visualize Differential Gene Expression Data", align =
+        h1("Differential Gene Expression Visualization", align =
              "left"),
         br(),
         uiOutput("choose_gene"),
