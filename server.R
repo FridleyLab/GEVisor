@@ -227,7 +227,8 @@ shinyServer(function(input, output, session){
   
   output$cluster_umap = renderPlot({
     validate(need(!is.null(roi()$seuratobj), ""))
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    #Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    umapSeaurat()
   })
   
   output$downloadPlot <- downloadHandler(
@@ -247,15 +248,36 @@ shinyServer(function(input, output, session){
     col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
   })
   
-  output$spatial_decon_plot <- renderPlot({
+  decon_spat <- reactive ({
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Interactive Plot.....")
+    
     plot_cell_abund(
       spatial_decon(), 
       ge_data()$segment %>% filter(SlideName == input$selected_slide),
       celltype = 'endothelial.cells',
       col_pal = color_pallet_decon()
     )
+    
+  }) })
+  
+  output$spatial_decon_plot <- renderPlot({
+    decon_spat()
+    # plot_cell_abund(
+    #   spatial_decon(), 
+    #   ge_data()$segment %>% filter(SlideName == input$selected_slide),
+    #   celltype = 'endothelial.cells',
+    #   col_pal = color_pallet_decon()
+    # )
   })
 
+  output$downloadPlot2 <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = decon_spat(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
 #sandhya page
   
 })

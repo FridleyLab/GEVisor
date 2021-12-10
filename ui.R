@@ -180,7 +180,8 @@ ui = dashboardPage(
           selected = "imola"
         ),
         
-        plotOutput("spatial_decon_plot")
+        plotOutput("spatial_decon_plot"),
+        downloadButton('downloadPlot2', 'Download Plot')
         
       ),
       tabItem(
