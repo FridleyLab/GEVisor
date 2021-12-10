@@ -1,6 +1,6 @@
 
 #make reactive for maximum number of genes > set to max features
-
+#make reactive for maximum number of samples in filtered df > max - 1 for max npcs
 
 shinyServer(function(input, output, session){
   
