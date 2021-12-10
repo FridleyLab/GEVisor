@@ -79,7 +79,8 @@ ui = dashboardPage(
       tabItem(
         tabName = 'visualization',
         h1("Visualize Differential Gene Expression Data", align =
-             "center"),
+             "left"),
+        br(),
         uiOutput("choose_gene"),
         selectInput(
           "color_pallet",
@@ -93,12 +94,14 @@ ui = dashboardPage(
           selected = "imola"
         ),
         plotOutput("ge_plot"),
+        girafeOutput("ge_plot_interactive")
         
       ),
       
       tabItem(
         tabName = 'clustering',
-        h1("Gene Expression Clustering", align = "center"),
+        h1("Gene Expression Clustering", align = "left"),
+        br(),
         fluidRow(
           column(
             width = 6,
