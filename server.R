@@ -69,7 +69,11 @@ shinyServer(function(input, output, session){
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
   
+  
+  
   roi = reactive({
+    withProgress(message = "Generating Data Sets for plotting ", value = 0,{
+      incProgress(0.33, detail = "Data for Seurat Plot.....")
     
     df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
     df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
@@ -81,6 +85,7 @@ shinyServer(function(input, output, session){
     roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
     return(roi)
   })
+  })
   
   roi_df = reactive({
     roi_df = roi()$result_df
@@ -91,8 +96,11 @@ shinyServer(function(input, output, session){
   })
   
   de_markers = reactive({
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Seurat Plot.....")
     #list of dataframes for the different clusters differentially expressed genes
     tmp = louvain_markers(roi()$seuratobj)
+  })
   })
   
   color_pal <- reactive({
@@ -104,13 +112,28 @@ shinyServer(function(input, output, session){
 
     # plot_clusters(roi_df(), color_pal)
 
-    plot_clusters(roi_df(), color_pal())
+    ploting_roi()
 
   })
   
+  ploting_roi<- reactive({
+    plot_clusters(roi_df(), color_pal())
+    
+  })
+  output$downloadPlot <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = ploting_roi(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
+  
   output$roi_plot_girafe <- renderGirafe({
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Interactive Plot.....")
     girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal())) 
+  })
   })
   
   output$cluster_umap = renderPlot({
