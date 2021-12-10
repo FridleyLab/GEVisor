@@ -11,7 +11,7 @@ plot_cell_abund = function(decon, df_spatial, celltype='endothelial.cells', col_
   df_plot = dplyr::full_join(df_spatial_temp, decon_df, by=c('SegmentDisplayName'='roi'))
   
   d_plot = ggplot2::ggplot(df_plot) +
-    ggplot2::geom_point(ggplot2::aes(x=ROICoordinateX, y=ROICoordinateY, color=get(celltype))) +
+    ggplot2::geom_point(ggplot2::aes(x=ROICoordinateX, y=ROICoordinateY, color=get(celltype)), size = 3) +
     ggplot2::scale_color_gradientn(colors=col_pal) +
     ggplot2::scale_y_reverse() +
     ggplot2::ylab('y_pos') +

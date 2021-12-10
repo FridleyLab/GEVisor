@@ -32,6 +32,11 @@ ui = dashboardPage(
       icon = icon('angle-double-right')
     ),
     menuItem(
+      "Deconvolution",
+      tabName = 'deconvolution',
+      icon = icon('angle-double-right')
+    ),
+    menuItem(
       "Spatial Analysis",
       tabName = 'spatial',
       icon = icon('angle-double-right')
@@ -83,7 +88,7 @@ ui = dashboardPage(
       
       tabItem(
         tabName = 'visualization',
-        h1("Visualize Differential Gene Expression Data", align =
+        h1("Differential Gene Expression Visualization", align =
              "left"),
         br(),
         uiOutput("choose_gene"),
@@ -98,7 +103,7 @@ ui = dashboardPage(
           ),
           selected = "imola"
         ),
-        #plotOutput("ge_plot"),
+
         girafeOutput("ge_plot_interactive")
         
       ),
@@ -110,7 +115,6 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
-            downloadButton('downloadPlot', 'Download Plot'),
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
@@ -151,6 +155,7 @@ ui = dashboardPage(
             width = 6,
             column(
               width = 12,
+              downloadButton('downloadPlot', 'Download Plot'),
               imageOutput("plot_image_preview", inline = T),
               br(),
               plotOutput("cluster_umap")
@@ -159,8 +164,29 @@ ui = dashboardPage(
         )
       ),
       tabItem(
-        tabName = 'clustering',
-        h1("Gene Expression Clustering", align = "left"),
+        tabName = 'deconvolution',
+        h1("Deconvolution", align = "left"),
+        br(),
+        
+        selectInput(
+          "color_pallet_decon",
+          "Choose Color Pallet",
+          choices = c(
+            "imola" = "imola",
+            "discrete rainbow" = "discrete_rainbow",
+            "Accent" = "Accent",
+            "sunset" = "sunset"
+          ),
+          selected = "imola"
+        ),
+        
+        plotOutput("spatial_decon_plot"),
+        downloadButton('downloadPlot2', 'Download Plot')
+        
+      ),
+      tabItem(
+        tabName = 'spatial',
+        h1("Spatial Analysis", align = "left"),
         br(),
         fluidRow(
           column(

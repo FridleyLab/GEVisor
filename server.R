@@ -50,42 +50,50 @@ shinyServer(function(input, output, session){
     if(is.null(ge_data())){
       return()
     }
+    withProgress(message = "Generating Data List for Gene Menue ", value = 0,{
+      incProgress(0.59, detail = "Data for Genes....")
     ge_data()$targetCount %>% pull(TargetName) %>% unique() %>% sort()
-  })
+  }) })
   
   output$choose_gene = renderUI({
     validate(need(length(gene_names())>1, ""))
     #genes = de_markers() %>% pull(gene)
+    withProgress(message = "Generating Gene List ", value = 0,{
+      incProgress(0.53, detail = "Data for Genes Plot.....")
     selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
-  })
+  }) })
   
   de_markers = reactive({
+    withProgress(message = "Generating Data Sets for plotting ", value = 0,{
+      incProgress(0.33, detail = "Data for SeuratObj Plot.....")
     #list of dataframes for the different clusters differentially expressed genes
     tmp = louvain_markers(roi()$seuratobj)
     #assign("tmp", tmp, envir = .GlobalEnv)
     return(tmp)
   })
+  })
   
   color_pal <- reactive({
+    withProgress(message = "Choosing color pallet ", value = 0,{
+      incProgress(0.23, detail = "Choosing colors....")
     pallet = input$color_pallet
     col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  })
+  }) })
   
   
-  output$ge_plot <- renderPlot({
-    validate(need(length(gene_names())>1, ""),
-             need(nrow(ge_data()$targetCount)>1, ""),
-             need(!is.null(color_pal()), ""))
-    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
-    
-    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
-              df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
-              gene = input$select_gene, 
-              col_pal = color_pal() 
-              )
-    
-  })
-  
+
+  # output$ge_plot <- renderPlot({
+  #   col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
+  #   
+  #   expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
+  #             df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
+  #             gene = input$select_gene, 
+  #             col_pal = color_pal() 
+  #             )
+  #   
+  # })
+
+
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
     
@@ -190,6 +198,7 @@ shinyServer(function(input, output, session){
   })
   })
   
+<<<<<<< HEAD
 
   output$roi_plot <- renderPlot({
 
@@ -208,6 +217,8 @@ shinyServer(function(input, output, session){
   #   plot_clusters(roi_df(), color_pal())
   # 
   # })
+=======
+>>>>>>> ebebc83de911d17afe0bc8d7873ad1efa38c1aef
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
@@ -216,13 +227,7 @@ shinyServer(function(input, output, session){
     plot_clusters(roi_df(), color_pal())
     
   })
-  output$downloadPlot <- downloadHandler(
-    filename = function() { paste(Sys.Date(), '.png', sep='') },
-    content = function(file) {
-      ggsave(file, plot = ploting_roi(), device = "png",
-             width = 7, height = 7, units = "in")
-    }
-  )
+  
   
   output$roi_plot_girafe <- renderGirafe({
     validate(need(nrow(roi_df())>1, ""),
@@ -232,15 +237,68 @@ shinyServer(function(input, output, session){
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip = tooltip_selected()))
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal_cluster(), tooltip = tooltip_selected()))
     })
+  })
+  
+  umapSeaurat <- reactive({
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    
   })
   
   output$cluster_umap = renderPlot({
     validate(need(!is.null(roi()$seuratobj), ""))
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
+    #Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    umapSeaurat()
+  })
+  
+  output$downloadPlot <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = umapSeaurat(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
+  
+  spatial_decon <- reactive({
+    spatialdecon_wrap(roi()$seuratobj)
+  })
+  
+  color_pallet_decon <- reactive({
+    pallet = input$color_pallet_decon
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
+  })
+  
+  decon_spat <- reactive ({
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Interactive Plot.....")
+    
+    plot_cell_abund(
+      spatial_decon(), 
+      ge_data()$segment %>% filter(SlideName == input$selected_slide),
+      celltype = 'endothelial.cells',
+      col_pal = color_pallet_decon()
+    )
+    
+  }) })
+  
+  output$spatial_decon_plot <- renderPlot({
+    decon_spat()
+    # plot_cell_abund(
+    #   spatial_decon(), 
+    #   ge_data()$segment %>% filter(SlideName == input$selected_slide),
+    #   celltype = 'endothelial.cells',
+    #   col_pal = color_pallet_decon()
+    # )
   })
 
+  output$downloadPlot2 <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = decon_spat(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
 #sandhya page
   
 })

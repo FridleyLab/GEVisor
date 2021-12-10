@@ -31,6 +31,7 @@ library(readxl)
 library(magick)
 library(ggiraph)
 library(reticulate)
+library(SpatialDecon)
 
 
 custom_blue <- {shinyDashboardThemeDIY(

@@ -22,7 +22,7 @@ expr_plot_interactive = function(df, df_spatial, gene, col_pal){
   
   p1=ggplot2::ggplot(data=expr) +
     #ggplot2::annotation_custom(img_obj, xmin=0, xmax=1) +
-    ggiraph::geom_point_interactive(ggplot2::aes(y=ROICoordinateX, x=ROICoordinateY, color=expr, tooltip = expr), size=3) +
+    ggiraph::geom_point_interactive(ggplot2::aes(x=ROICoordinateX, y=ROICoordinateY, color=expr, tooltip = expr), size=3) +
     ggplot2::scale_color_gradientn(colors=col_pal) +
     ggtitle(paste0('log_expr ', gene)) +
     ggplot2::theme_classic() + 
