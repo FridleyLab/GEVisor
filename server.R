@@ -54,6 +54,7 @@ shinyServer(function(input, output, session){
   })
   
   output$choose_gene = renderUI({
+    validate(need(length(gene_names())>1, ""))
     #genes = de_markers() %>% pull(gene)
     selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
   })
@@ -72,6 +73,9 @@ shinyServer(function(input, output, session){
   
   
   output$ge_plot <- renderPlot({
+    validate(need(length(gene_names())>1, ""),
+             need(nrow(ge_data()$targetCount)>1, ""),
+             need(!is.null(color_pal()), ""))
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
     
     expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel))), 
@@ -128,6 +132,8 @@ shinyServer(function(input, output, session){
   })
   
   output$choose_tooltip = renderUI({
+    validate(need(!is.null(roi_df()), "Loading ROI data....."),
+             need(!is.null(de_markers()), "Getting differentially expressed genes....."))
     res = roi_df()
     markers = de_markers()
     
@@ -170,11 +176,16 @@ shinyServer(function(input, output, session){
   })
   
   output$roi_plot_girafe <- renderGirafe({
+    validate(need(nrow(roi_df())>1, ""),
+             need(length(de_markers()) > 1, ""),
+             need(!is.null(color_pal()), ""),
+             need(!is.null(tooltip_selected()), ""))
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
     girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip_selected()))
   })
   
   output$cluster_umap = renderPlot({
+    validate(need(!is.null(roi()$seuratobj), ""))
     Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
   })
 })
