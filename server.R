@@ -213,13 +213,13 @@ shinyServer(function(input, output, session){
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip = tooltip_selected()))
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal_cluster(), tooltip = tooltip_selected()))
     })
   })
   
   output$cluster_umap = renderPlot({
     validate(need(!is.null(roi()$seuratobj), ""))
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3)
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
   })
 
 #sandhya page
