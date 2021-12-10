@@ -182,14 +182,14 @@ shinyServer(function(input, output, session){
     col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
   })
   
-<<<<<<< HEAD
+
   output$roi_plot <- renderPlot({
 
     # plot_clusters(roi_df(), color_pal)
 
     ploting_roi()
+  })
 
-=======
   # output$roi_plot <- renderPlot({
   # 
   #   # plot_clusters(roi_df(), color_pal)
@@ -199,7 +199,7 @@ shinyServer(function(input, output, session){
   # })
   tooltip_selected <- reactive({
     input$selected_tooltip
->>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
+
   })
   
   ploting_roi<- reactive({
@@ -216,13 +216,9 @@ shinyServer(function(input, output, session){
   
   output$roi_plot_girafe <- renderGirafe({
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
-<<<<<<< HEAD
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal())) 
-=======
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip_selected()))
->>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip = tooltip_selected()))
   })
   })
   

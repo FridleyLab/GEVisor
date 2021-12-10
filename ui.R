@@ -105,12 +105,9 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
-<<<<<<< HEAD
             downloadButton('downloadPlot', 'Download Plot'),
             plotOutput("roi_plot"),
-=======
-            # plotOutput("roi_plot"),
->>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
+
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
@@ -153,12 +150,7 @@ ui = dashboardPage(
               width = 12,
               imageOutput("plot_image_preview", inline = T),
               br(),
-<<<<<<< HEAD
               plotOutput("cluster_umap", inline = T)
-              
-=======
-              plotOutput("cluster_umap")
->>>>>>> 76a0f26469add38bd2246e66a17c5ac532eb31e4
             )
           )
         )
