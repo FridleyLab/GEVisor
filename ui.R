@@ -126,7 +126,7 @@ ui = dashboardPage(
               value = 30
             ),
             selectInput(
-              "color_pallet",
+              "color_pallet_cluster",
               "Choose Color Pallet",
               choices = c(
                 "imola" = "imola",
