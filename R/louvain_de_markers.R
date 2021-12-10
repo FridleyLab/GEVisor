@@ -8,10 +8,10 @@
 louvain_markers = function(res, min.pct=0.25){
 
   markers = Seurat::FindAllMarkers(res)
-  topmarkers = list()
-  for(cluster in unique(markers$cluster)){
-    topmarkers[[cluster]] = markers[markers$cluster == cluster, ]
-  }
-
-  return(markers)
+  # topmarkers = list()
+  # for(cluster in unique(markers$cluster)){
+  #   topmarkers[[cluster]] = markers[markers$cluster == cluster, ]
+  # }
+  # 
+  # return(markers)
 }

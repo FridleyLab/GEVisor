@@ -102,7 +102,7 @@ shinyServer(function(input, output, session){
   
   output$roi_plot <- renderPlot({
 
-    plot_clusters(roi_df(), color_pal)
+    # plot_clusters(roi_df(), color_pal)
 
     plot_clusters(roi_df(), color_pal())
 
@@ -110,7 +110,7 @@ shinyServer(function(input, output, session){
   
   output$roi_plot_girafe <- renderGirafe({
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
-    girafe(ggobj = plot_clusters_interactive(roi_df(), color_pal())) 
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal())) 
   })
   
   output$cluster_umap = renderPlot({
