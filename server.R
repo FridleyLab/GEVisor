@@ -54,6 +54,7 @@ shinyServer(function(input, output, session){
   })
   
   output$choose_gene = renderUI({
+    validate(need(length(gene_names())>1, ""))
     #genes = de_markers() %>% pull(gene)
     selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
   })
@@ -61,7 +62,7 @@ shinyServer(function(input, output, session){
   de_markers = reactive({
     #list of dataframes for the different clusters differentially expressed genes
     tmp = louvain_markers(roi()$seuratobj)
-    assign("tmp", tmp, envir = .GlobalEnv)
+    #assign("tmp", tmp, envir = .GlobalEnv)
     return(tmp)
   })
   
@@ -71,6 +72,7 @@ shinyServer(function(input, output, session){
   })
   
   
+<<<<<<< HEAD
   # output$ge_plot <- renderPlot({
   #   col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
   #   
@@ -81,6 +83,21 @@ shinyServer(function(input, output, session){
   #             )
   #   
   # })
+=======
+  output$ge_plot <- renderPlot({
+    validate(need(length(gene_names())>1, ""),
+             need(nrow(ge_data()$targetCount)>1, ""),
+             need(!is.null(color_pal()), ""))
+    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
+    
+    expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
+              df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
+              gene = input$select_gene, 
+              col_pal = color_pal() 
+              )
+    
+  })
+>>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
   
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
@@ -98,6 +115,13 @@ shinyServer(function(input, output, session){
   })
 
 #clustering page
+  
+  
+  color_pal_cluster <- reactive({
+    pallet = input$color_pallet_cluster
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
+  })
+  
   ge_image2 = reactive({
     if(is.null(input$mif_image_input)){
       return()
@@ -137,7 +161,7 @@ shinyServer(function(input, output, session){
     npcs = input$npcs
     r = input$r
     
-    assign("ge_data", ge_data(), envir = .GlobalEnv)
+    #assign("ge_data", ge_data(), envir = .GlobalEnv)
     roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
     return(roi)
   })
@@ -149,6 +173,8 @@ shinyServer(function(input, output, session){
   })
   
   output$choose_tooltip = renderUI({
+    validate(need(!is.null(roi_df()), "Loading ROI data....."),
+             need(!is.null(de_markers()), "Getting differentially expressed genes....."))
     res = roi_df()
     markers = de_markers()
     
@@ -177,11 +203,6 @@ shinyServer(function(input, output, session){
   })
   })
   
-  color_pal <- reactive({
-    pallet = input$color_pallet
-    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  })
-  
 
   output$roi_plot <- renderPlot({
 <<<<<<< HEAD
@@ -196,8 +217,18 @@ shinyServer(function(input, output, session){
 >>>>>>> 58fe7f4b42bb98bfc4cc9fce01425b3b8a170348
     ploting_roi()
   })
+<<<<<<< HEAD
 
   
+=======
+  # output$roi_plot <- renderPlot({
+  # 
+  #   # plot_clusters(roi_df(), color_pal)
+  # 
+  #   plot_clusters(roi_df(), color_pal())
+  # 
+  # })
+>>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
@@ -215,14 +246,26 @@ shinyServer(function(input, output, session){
   )
   
   output$roi_plot_girafe <- renderGirafe({
+    validate(need(nrow(roi_df())>1, ""),
+             need(length(de_markers()) > 1, ""),
+             need(!is.null(color_pal_cluster()), ""),
+             need(!is.null(tooltip_selected()), ""))
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
     girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip = tooltip_selected()))
-  })
+    })
   })
   
   output$cluster_umap = renderPlot({
+<<<<<<< HEAD
     Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3)
+=======
+    validate(need(!is.null(roi()$seuratobj), ""))
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap")
+>>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
   })
+
+#sandhya page
+  
 })

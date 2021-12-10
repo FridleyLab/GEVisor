@@ -31,6 +31,11 @@ ui = dashboardPage(
       tabName = 'clustering',
       icon = icon('angle-double-right')
     ),
+    menuItem(
+      "Spatial Analysis",
+      tabName = 'spatial',
+      icon = icon('angle-double-right')
+    ),
     tags$br()
   )),
   
@@ -93,7 +98,11 @@ ui = dashboardPage(
           ),
           selected = "imola"
         ),
+<<<<<<< HEAD
         # plotOutput("ge_plot"),
+=======
+        #plotOutput("ge_plot"),
+>>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
         girafeOutput("ge_plot_interactive")
         
       ),
@@ -107,11 +116,14 @@ ui = dashboardPage(
             width = 6,
             downloadButton('downloadPlot', 'Download Plot'),
 <<<<<<< HEAD
+<<<<<<< HEAD
             # plotOutput("roi_plot"),
 
 =======
             plotOutput("roi_plot"),
 >>>>>>> 58fe7f4b42bb98bfc4cc9fce01425b3b8a170348
+=======
+>>>>>>> f812a4d3894724b7782dda548cb116fa1b662a61
             girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
@@ -135,7 +147,7 @@ ui = dashboardPage(
               value = 30
             ),
             selectInput(
-              "color_pallet",
+              "color_pallet_cluster",
               "Choose Color Pallet",
               choices = c(
                 "imola" = "imola",
@@ -156,6 +168,17 @@ ui = dashboardPage(
               br(),
               plotOutput("cluster_umap")
             )
+          )
+        )
+      ),
+      tabItem(
+        tabName = 'clustering',
+        h1("Gene Expression Clustering", align = "left"),
+        br(),
+        fluidRow(
+          column(
+            width = 6,
+            
           )
         )
       )
