@@ -31,6 +31,11 @@ ui = dashboardPage(
       tabName = 'clustering',
       icon = icon('angle-double-right')
     ),
+    menuItem(
+      "Spatial Analysis",
+      tabName = 'spatial',
+      icon = icon('angle-double-right')
+    ),
     tags$br()
   )),
   
@@ -79,22 +84,38 @@ ui = dashboardPage(
       tabItem(
         tabName = 'visualization',
         h1("Visualize Differential Gene Expression Data", align =
-             "center"),
+             "left"),
+        br(),
+        uiOutput("choose_gene"),
+        selectInput(
+          "color_pallet",
+          "Choose Color Pallet",
+          choices = c(
+            "imola" = "imola",
+            "discrete rainbow" = "discrete_rainbow",
+            "Accent" = "Accent",
+            "sunset" = "sunset"
+          ),
+          selected = "imola"
+        ),
+
+        girafeOutput("ge_plot_interactive")
         
       ),
       
       tabItem(
         tabName = 'clustering',
-        h1("Gene Expression Clustering", align = "center"),
+        h1("Gene Expression Clustering", align = "left"),
+        br(),
         fluidRow(
           column(
             width = 6,
-            plotOutput("roi_plot"),
+            girafeOutput("roi_plot_girafe"),
             sliderInput(
               "r",
               "Resolution",
               min = 0.3,
-              max = 1.2,
+              max = 3.0,
               value = 0.8
             ),
             sliderInput(
@@ -112,7 +133,7 @@ ui = dashboardPage(
               value = 30
             ),
             selectInput(
-              "color_pallet",
+              "color_pallet_cluster",
               "Choose Color Pallet",
               choices = c(
                 "imola" = "imola",
@@ -120,17 +141,31 @@ ui = dashboardPage(
                 "Accent" = "Accent"
               ),
               selected = "imola"
-            )
+            ),
+            uiOutput("choose_tooltip"),
+            # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
           ),
           box(
             #id = "image_cluster_container",
             width = 6,
             column(
               width = 12,
-              imageOutput("plot_image_preview"),
+              downloadButton('downloadPlot', 'Download Plot'),
+              imageOutput("plot_image_preview", inline = T),
               br(),
-              plotOutput("cluster_umap", inline = T)
+              plotOutput("cluster_umap")
             )
+          )
+        )
+      ),
+      tabItem(
+        tabName = 'clustering',
+        h1("Gene Expression Clustering", align = "left"),
+        br(),
+        fluidRow(
+          column(
+            width = 6,
+            
           )
         )
       )

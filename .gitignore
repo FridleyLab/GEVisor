@@ -2,4 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+<<<<<<< HEAD
+server_example.R
+ui_example.R
+example_run_louvain_clusters.R
+=======
 image_plot.Rmd
+>>>>>>> main

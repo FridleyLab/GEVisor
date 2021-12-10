@@ -18,7 +18,7 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   SeuratObj = Seurat::NormalizeData(SeuratObj)
   SeuratObj = Seurat::FindVariableFeatures(SeuratObj, nfeatures=nfeatures)
   SeuratObj = Seurat::ScaleData(SeuratObj, features=rownames(SeuratObj))
-  SeuratObj = Seurat::RunPCA(SeuratObj, features=Seurat::VariableFeatures(SeuratObj))
+  SeuratObj = Seurat::RunPCA(SeuratObj, features=Seurat::VariableFeatures(SeuratObj), npcs = npcs)
   SeuratObj = Seurat::FindNeighbors(SeuratObj, dims=1:npcs)
   SeuratObj = Seurat::FindClusters(SeuratObj, resolution=r)
   SeuratObj = Seurat::RunUMAP(SeuratObj, dims=1:npcs)
@@ -26,8 +26,11 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   cluster_col = tibble::tibble(roi=names(Seurat::Idents(SeuratObj)), cluster=Seurat::Idents(SeuratObj))
   
   result_df = dplyr::full_join(cluster_col, df_spatial, by=c('roi' = "SegmentDisplayName"))
-  result_df = result_df[, c("roi","ROICoordinateX","ROICoordinateY","cluster")]
-  colnames(result_df) = c('roi', 'x_pos', 'y_pos', 'cluster')
+  # result_df = result_df[, c("roi","ROICoordinateX","ROICoordinateY","cluster")]
+  # colnames(result_df) = c('roi', 'x_pos', 'y_pos', 'cluster')
+  result_df <- result_df %>% 
+    # rename("x_pos" = ROICoordinateX, "y_pos" = ROICoordinateY)
+    select(roi, "x_pos" = ROICoordinateX, "y_pos" = ROICoordinateY, cluster, everything())
   
   results = list()
   results[['result_df']] = result_df
