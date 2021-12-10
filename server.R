@@ -228,6 +228,24 @@ shinyServer(function(input, output, session){
              width = 7, height = 7, units = "in")
     }
   )
+  
+  spatial_decon <- reactive({
+    spatialdecon_wrap(roi()$seuratobj)
+  })
+  
+  color_pallet_decon <- reactive({
+    pallet = input$color_pallet_decon
+    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
+  })
+  
+  output$spatial_decon_plot <- renderPlot({
+    plot_cell_abund(
+      spatial_decon(), 
+      ge_data()$segment %>% filter(SlideName == input$selected_slide),
+      celltype = 'endothelial.cells',
+      col_pal = color_pallet_decon()
+    )
+  })
 
 #sandhya page
   

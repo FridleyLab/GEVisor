@@ -32,6 +32,11 @@ ui = dashboardPage(
       icon = icon('angle-double-right')
     ),
     menuItem(
+      "Deconvolution",
+      tabName = 'deconvolution',
+      icon = icon('angle-double-right')
+    ),
+    menuItem(
       "Spatial Analysis",
       tabName = 'spatial',
       icon = icon('angle-double-right')
@@ -159,8 +164,28 @@ ui = dashboardPage(
         )
       ),
       tabItem(
-        tabName = 'clustering',
-        h1("Gene Expression Clustering", align = "left"),
+        tabName = 'deconvolution',
+        h1("Deconvolution", align = "left"),
+        br(),
+        
+        selectInput(
+          "color_pallet_decon",
+          "Choose Color Pallet",
+          choices = c(
+            "imola" = "imola",
+            "discrete rainbow" = "discrete_rainbow",
+            "Accent" = "Accent",
+            "sunset" = "sunset"
+          ),
+          selected = "imola"
+        ),
+        
+        plotOutput("spatial_decon_plot")
+        
+      ),
+      tabItem(
+        tabName = 'spatial',
+        h1("Spatial Analysis", align = "left"),
         br(),
         fluidRow(
           column(
