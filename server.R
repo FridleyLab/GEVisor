@@ -81,7 +81,23 @@ shinyServer(function(input, output, session){
     expr_plot(df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
               df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
               gene = input$select_gene, 
-              col_pal = color_pal())
+              col_pal = color_pal() 
+              )
+    
+  })
+  
+  output$ge_plot_interactive <- renderGirafe({
+    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
+    
+    p1 <- expr_plot_interactive(
+      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
+      df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
+      gene = input$select_gene, 
+      col_pal = color_pal()
+      # tooltip = expr
+    )
+    
+    girafe(ggobj = p1)
     
   })
 
@@ -120,7 +136,11 @@ shinyServer(function(input, output, session){
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
   
+  
+  
   roi = reactive({
+    withProgress(message = "Generating Data Sets for plotting ", value = 0,{
+      incProgress(0.33, detail = "Data for Seurat Plot.....")
     
     df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
     df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
@@ -131,6 +151,7 @@ shinyServer(function(input, output, session){
     #assign("ge_data", ge_data(), envir = .GlobalEnv)
     roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
     return(roi)
+  })
   })
   
   roi_df = reactive({
@@ -162,10 +183,20 @@ shinyServer(function(input, output, session){
   })
   
   de_markers = reactive({
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Seurat Plot.....")
     #list of dataframes for the different clusters differentially expressed genes
     tmp = louvain_markers(roi()$seuratobj)
   })
+  })
   
+
+  output$roi_plot <- renderPlot({
+
+    # plot_clusters(roi_df(), color_pal)
+
+    ploting_roi()
+  })
   # output$roi_plot <- renderPlot({
   # 
   #   # plot_clusters(roi_df(), color_pal)
@@ -175,7 +206,20 @@ shinyServer(function(input, output, session){
   # })
   tooltip_selected <- reactive({
     input$selected_tooltip
+
   })
+  
+  ploting_roi<- reactive({
+    plot_clusters(roi_df(), color_pal())
+    
+  })
+  output$downloadPlot <- downloadHandler(
+    filename = function() { paste(Sys.Date(), '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = ploting_roi(), device = "png",
+             width = 7, height = 7, units = "in")
+    }
+  )
   
   output$roi_plot_girafe <- renderGirafe({
     validate(need(nrow(roi_df())>1, ""),
@@ -183,7 +227,10 @@ shinyServer(function(input, output, session){
              need(!is.null(color_pal_cluster()), ""),
              need(!is.null(tooltip_selected()), ""))
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal_cluster(), tooltip_selected()))
+    withProgress(message = "Generating Plot", value = 0,{
+      incProgress(0.33, detail = "Interactive Plot.....")
+    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal(), tooltip = tooltip_selected()))
+    })
   })
   
   output$cluster_umap = renderPlot({
