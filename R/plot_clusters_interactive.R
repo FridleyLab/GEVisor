@@ -21,6 +21,7 @@ plot_clusters_interactive = function(res, markers, col_pal, tooltip = all){
     ggiraph::geom_point_interactive(ggplot2::aes(x=x_pos, y=y_pos, color=cluster, tooltip = get(tooltip))) +
     ggplot2::scale_color_manual(values=col_pal) +
     ggplot2::theme_classic() +
+    ggplot2::scale_y_reverse() +
     coord_equal()
   
   #ggiraph::girafe(ggobj = p1)
