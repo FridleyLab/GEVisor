@@ -15,34 +15,36 @@
 
 ui = dashboardPage(
   dashboardHeader(title = "GEVisor"),
-  dashboardSidebar(sidebarMenu(
-    menuItem(
-      "Importing Data",
-      tabName = 'import',
-      icon = icon('upload')
-    ),
-    menuItem(
-      "GE Visualization",
-      tabName = 'visualization',
-      icon = icon('angle-right')
-    ),
-    menuItem(
-      "GE Clustering",
-      tabName = 'clustering',
-      icon = icon('angle-double-right')
-    ),
-    menuItem(
-      "Deconvolution",
-      tabName = 'deconvolution',
-      icon = icon('angle-double-right')
-    ),
-    menuItem(
-      "Spatial Analysis",
-      tabName = 'spatial',
-      icon = icon('angle-double-right')
-    ),
-    tags$br()
-  )),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem(
+        "Importing Data",
+        tabName = 'import',
+        icon = icon('upload')
+      ),
+      menuItem(
+        "GE Visualization",
+        tabName = 'visualization',
+        icon = icon('angle-right')
+      ),
+      menuItem(
+        "GE Clustering",
+        tabName = 'clustering',
+        icon = icon('angle-double-right')
+      ),
+      menuItem(
+        "Deconvolution",
+        tabName = 'deconvolution',
+        icon = icon('angle-double-right')
+      ),
+      menuItem(
+        "Spatial Analysis",
+        tabName = 'spatial',
+        icon = icon('angle-double-right')
+      ),
+      tags$br()
+    )
+  ),
   
   dashboardBody(
     custom_blue,
@@ -52,24 +54,28 @@ ui = dashboardPage(
         h1("GEVisor", align = "left"),
         br(),
         fluidRow(
-          box(width = 6,
-              column(
-                width = 12,
-                fileInput(
-                  "ge_data_input",
-                  "Choose Gene Expression",
-                  multiple = FALSE,
-                  accept = c(c("xlsx"), #"csv",
-                             "Gene Expression Data",
-                             c(".xlsx"))
-                ),
-                #".csv",
-                uiOutput("choose_slide"),
-                div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
-              )),
+          box(
+            width = 6,
+            status = "primary",
+            column(
+              width = 12,
+              fileInput(
+                "ge_data_input",
+                "Choose Gene Expression",
+                multiple = FALSE,
+                accept = c(c("xlsx"), #"csv",
+                           "Gene Expression Data",
+                           c(".xlsx"))
+              ),
+              #".csv",
+              uiOutput("choose_slide"),
+              div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
+            )
+          ),
           box(
             #id = "image_input_container",
             width = 6,
+            status = "primary",
             column(
               width = 12,
               fileInput(
@@ -80,7 +86,7 @@ ui = dashboardPage(
                            "MIF Image file",
                            c(".png", ".tiff"))
               ),
-              imageOutput("upload_image_preview", inline=T, width = "auto"),
+              imageOutput("upload_image_preview", inline = T, width = "auto"),
             )
           )
         )
@@ -91,20 +97,38 @@ ui = dashboardPage(
         h1("Differential Gene Expression Visualization", align =
              "left"),
         br(),
-        uiOutput("choose_gene"),
-        selectInput(
-          "color_pallet",
-          "Choose Color Pallet",
-          choices = c(
-            "imola" = "imola",
-            "discrete rainbow" = "discrete_rainbow",
-            "Accent" = "Accent",
-            "sunset" = "sunset"
+        fluidRow(
+          width = 12,
+          box(
+            width = 6,
+            status = "primary",
+            uiOutput("choose_gene"),
+            selectInput(
+              "color_pallet",
+              "Choose Color Pallet",
+              choices = c(
+                "imola" = "imola",
+                "discrete rainbow" = "discrete_rainbow",
+                "Accent" = "Accent",
+                "sunset" = "sunset"
+              ),
+              selected = "imola"
+            ),
+            
+            girafeOutput("ge_plot_interactive")
           ),
-          selected = "imola"
-        ),
-
-        girafeOutput("ge_plot_interactive")
+          box(width = 6,
+              status = "primary",
+              br(),
+              br(),
+              br(),
+              br(),
+              br(),
+              br(),
+              br(),
+              imageOutput("ge_image_preview", inline = T, width = "auto"),
+              )
+        )
         
       ),
       
@@ -188,16 +212,14 @@ ui = dashboardPage(
         tabName = 'spatial',
         h1("Spatial Analysis", align = "left"),
         br(),
-        fluidRow(
-          column(
-            width = 6,
-            plotOutput("sandhya_firstPlot")
-          ),
-          column(
-            width = 6,
-            plotOutput("sandhya_secondPlot")
-          )
-        )
+        fluidRow(column(width = 6,
+                        plotOutput(
+                          "sandhya_firstPlot"
+                        )),
+                 column(
+                   width = 6,
+                   plotOutput("sandhya_secondPlot")
+                 ))
       )
     )
   )

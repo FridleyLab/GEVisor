@@ -92,7 +92,26 @@ shinyServer(function(input, output, session){
   #             )
   #   
   # })
-
+  
+  ge_image3 = reactive({
+    if(is.null(input$mif_image_input)){
+      return()
+    }
+    im = magick::image_read(input$mif_image_input$datapath)
+    im2 = magick::image_resize(im, geometry = "500x500") %>%
+      image_write(tempfile(fileext='png'), format = 'png')
+    print(session$clientData$output$output_upload_image_preview_width)
+    #assign("session", session, envir = .GlobalEnv)
+    return(im2)
+  })
+  
+  output$ge_image_preview <- renderImage({
+    req(ge_image3())
+    img = ge_image3()
+    width  <- session$clientData$output_upload_image_preview_width
+    
+    list(src = img, contentType = "image/png")
+  }, deleteFile = T)
 
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
