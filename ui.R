@@ -191,7 +191,11 @@ ui = dashboardPage(
         fluidRow(
           column(
             width = 6,
-            
+            plotOutput("sandhya_firstPlot")
+          ),
+          column(
+            width = 6,
+            plotOutput("sandhya_secondPlot")
           )
         )
       )

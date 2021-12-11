@@ -280,5 +280,29 @@ shinyServer(function(input, output, session){
     }
   )
 #sandhya page
+  sandhya_plot <- reactive ({
+    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+    df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+    sandhya_data(
+      df_spatial = df_spatial,
+      df = df
+    )
+  })
   
+  output$sandhya_firstPlot <- renderPlot({
+    sandhya_plot()
+  })
+  
+  sandhya_plot2 <- reactive ({
+    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+    df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+    sandhya_data2(
+      df_spatial = df_spatial,
+      df = df
+    )
+  })
+  
+  output$sandhya_secondPlot <- renderPlot({
+    sandhya_plot2()
+  })
 })
