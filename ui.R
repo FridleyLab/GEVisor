@@ -155,9 +155,9 @@ ui = dashboardPage(
             width = 6,
             column(
               width = 12,
-              downloadButton('downloadPlot', 'Download Plot'),
               imageOutput("plot_image_preview", inline = T),
               br(),
+              downloadButton('downloadPlot', 'Download Plot'),
               plotOutput("cluster_umap")
             )
           )
