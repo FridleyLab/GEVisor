@@ -15,6 +15,7 @@
 
 ui = dashboardPage(
   dashboardHeader(title = "GEVisor"),
+<<<<<<< Updated upstream
   dashboardSidebar(sidebarMenu(
     menuItem(
       "Importing Data",
@@ -43,15 +44,47 @@ ui = dashboardPage(
     ),
     tags$br()
   )),
+=======
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem(
+        "Importing Data",
+        tabName = 'import',
+        icon = icon('upload')
+      ),
+      menuItem(
+        "GE Visualization",
+        tabName = 'visualization',
+        icon = icon('dna')
+      ),
+      menuItem(
+        "GE Clustering",
+        tabName = 'clustering',
+        icon = icon('glyphicon glyphicon-equalizer', lib='glyphicon')
+      ),
+      menuItem(
+        "GE Deconvolution",
+        tabName = 'deconvolution',
+        icon = icon('circle')
+      ),
+      menuItem(
+        "Spatial Analysis",
+        tabName = 'spatial',
+        icon = icon('map')
+      ),
+      tags$br()
+    )
+  ),
+>>>>>>> Stashed changes
   
   dashboardBody(
     custom_blue,
     tabItems(
       tabItem(
         tabName = 'import',
-        h1("GEVisor", align = "left"),
         br(),
         fluidRow(
+<<<<<<< Updated upstream
           box(width = 6,
               column(
                 width = 12,
@@ -67,6 +100,36 @@ ui = dashboardPage(
                 uiOutput("choose_slide"),
                 div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
               )),
+=======
+          box(
+            width = 12,
+            status = "primary",
+            column(
+              width = 12,
+              uiOutput("inputpage_info")
+            )
+          )
+        ),
+        fluidRow(
+          box(
+            width = 6,
+            status = "primary",
+            column(
+              width = 12,
+              fileInput(
+                "ge_data_input",
+                "Choose gene expression/annotation file",
+                multiple = FALSE,
+                accept = c(c("xlsx"), #"csv",
+                           "Gene Expression Data",
+                           c(".xlsx"))
+              ),
+              #".csv",
+              uiOutput("choose_slide"),
+              div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
+            )
+          ),
+>>>>>>> Stashed changes
           box(
             #id = "image_input_container",
             width = 6,
@@ -74,7 +137,7 @@ ui = dashboardPage(
               width = 12,
               fileInput(
                 "mif_image_input",
-                "Choose MIF Image file",
+                "Choose immunoflourescent image file",
                 multiple = FALSE,
                 accept = c(c("png", "tiff"),
                            "MIF Image file",

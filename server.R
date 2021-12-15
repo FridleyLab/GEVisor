@@ -21,7 +21,7 @@ shinyServer(function(input, output, session){
 
   output$choose_slide = renderUI({
     slides = ge_data()$segment$SlideName %>% unique()
-    selectInput("selected_slide", "Choose Slide ID to Analyse",
+    selectInput("selected_slide", "Choose slide ID to analyze",
                 choices = slides,
                 selected = slides[1])
   })
@@ -29,7 +29,7 @@ shinyServer(function(input, output, session){
   output$ge_data_preview = renderTable({
     validate(need(nrow(ge_data()$segment) > 1, "Please upload data....."))
     
-    head(ge_data()$segment, n=15L)
+    head(ge_data()$segment %>% filter(SlideName == input$selected_slide), n=10L)
   })
   
   ge_image = reactive({
@@ -95,10 +95,10 @@ shinyServer(function(input, output, session){
 
 
   output$ge_plot_interactive <- renderGirafe({
-    col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
+    col_pal = color_parse(color_pal = input$color_pallet, n_cats=5)
     
     p1 <- expr_plot_interactive(
-      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel))), 
+      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(ge_data()$segment$ScanLabel[ge_data()$segment$SlideName == input$selected_slide]))), 
       df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide), 
       gene = input$select_gene, 
       col_pal = color_pal()
@@ -149,17 +149,20 @@ shinyServer(function(input, output, session){
   roi = reactive({
     withProgress(message = "Generating Data Sets for plotting ", value = 0,{
       incProgress(0.33, detail = "Data for Seurat Plot.....")
-    
-    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
-    df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
-    nfeatures = input$features
-    npcs = input$npcs
-    r = input$r
-    
-    #assign("ge_data", ge_data(), envir = .GlobalEnv)
-    roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
-    return(roi)
-  })
+      
+      df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+      nfeatures = input$features
+      npcs = input$npcs
+      r = input$r
+      
+      df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+      df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+      
+      #assign("ge_data", ge_data(), envir = .GlobalEnv)
+      roi = seurat_louvain(df, df_spatial, nfeatures, npcs, r)
+      return(roi)
+    })
   })
   
   roi_df = reactive({
@@ -280,4 +283,32 @@ shinyServer(function(input, output, session){
   )
 #sandhya page
   
+<<<<<<< Updated upstream
+=======
+  output$sandhya_firstPlot <- renderPlot({
+    sandhya_plot()
+  })
+  
+  sandhya_plot2 <- reactive ({
+    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+    df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+    sandhya_data2(
+      df_spatial = df_spatial,
+      df = df
+    )
+  })
+  
+  output$sandhya_secondPlot <- renderPlot({
+    sandhya_plot2()
+  })
+  
+  # Show info on the landing/input page
+  output$inputpage_info <- renderUI({
+    withMathJax({
+      k = knitr::knit(input = "inputpage_info.rmd", quiet=T)
+      HTML(markdown::markdownToHTML(k, fragment.only=T))
+    })
+  })
+  
+>>>>>>> Stashed changes
 })

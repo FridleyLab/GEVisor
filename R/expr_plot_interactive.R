@@ -5,7 +5,14 @@
 expr_plot_interactive = function(df, df_spatial, gene, col_pal){
   
   # Calculate (spot) library sizes. Then, add 1 to each library size.
-  libsizes = colSums(df[, -1])
+  libsizes = colSums(df[, -1], na.rm=T)
+  
+  # Filterv out zero count spots
+  roi_mask = libsizes == 0
+  libsizes = libsizes[!roi_mask]
+  df = df[, 1] %>%
+    dplyr::bind_cols(., df[, c(F, !roi_mask)])
+  
   # Divide each count value by their respective column (spot) normalization factor.
   df1 = sweep(df[, -1], 2, libsizes, '/')
   # Then multiply by scaling factor

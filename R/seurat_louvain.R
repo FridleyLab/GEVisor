@@ -8,9 +8,18 @@
 
 seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0.8){
 
-  seurat_mtx = as.data.frame(df)
+  # Calculate (spot) library sizes. Then, add 1 to each library size.
+  df[is.na(df)] = 0
+  libsizes = colSums(df[, -1], na.rm=T)
+  
+  # Filterv out zero count spots
+  roi_mask = libsizes == 0
+  df = df[, 1] %>%
+    dplyr::bind_cols(., df[, c(F, !roi_mask)])
+  
+  seurat_mtx = as.data.frame(df[, -1])
 
-  rownames(seurat_mtx) = seurat_mtx[, 1]
+  rownames(seurat_mtx) = df[[1]]
   seurat_mtx = seurat_mtx[, -1]
 
   SeuratObj = SeuratObject::CreateSeuratObject(seurat_mtx)
