@@ -92,7 +92,26 @@ shinyServer(function(input, output, session){
   #             )
   #   
   # })
-
+  
+  ge_image3 = reactive({
+    if(is.null(input$mif_image_input)){
+      return()
+    }
+    im = magick::image_read(input$mif_image_input$datapath)
+    im2 = magick::image_resize(im, geometry = "500x500") %>%
+      image_write(tempfile(fileext='png'), format = 'png')
+    print(session$clientData$output$output_upload_image_preview_width)
+    #assign("session", session, envir = .GlobalEnv)
+    return(im2)
+  })
+  
+  output$ge_image_preview <- renderImage({
+    req(ge_image3())
+    img = ge_image3()
+    width  <- session$clientData$output_upload_image_preview_width
+    
+    list(src = img, contentType = "image/png")
+  }, deleteFile = T)
 
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=5)
@@ -201,6 +220,7 @@ shinyServer(function(input, output, session){
   })
   })
   
+
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
@@ -282,9 +302,15 @@ shinyServer(function(input, output, session){
     }
   )
 #sandhya page
+  sandhya_plot <- reactive ({
+    df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
+    df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
+    sandhya_data(
+      df_spatial = df_spatial,
+      df = df
+    )
+  })
   
-<<<<<<< Updated upstream
-=======
   output$sandhya_firstPlot <- renderPlot({
     sandhya_plot()
   })
@@ -310,5 +336,4 @@ shinyServer(function(input, output, session){
     })
   })
   
->>>>>>> Stashed changes
 })
