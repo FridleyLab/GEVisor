@@ -4,8 +4,8 @@
 #make reactives progress bar active
 
 shinyServer(function(input, output, session){
-
-#import data
+  
+  #import data
   ge_data = reactive({
     if(is.null(input$ge_data_input)){
       return()
@@ -18,7 +18,7 @@ shinyServer(function(input, output, session){
     #assign("dfs", dfs, envir = .GlobalEnv)
     return(dfs)
   })
-
+  
   output$choose_slide = renderUI({
     slides = ge_data()$segment$SlideName %>% unique()
     selectInput("selected_slide", "Choose slide ID to analyze",
@@ -44,7 +44,7 @@ shinyServer(function(input, output, session){
     return(im2)
   })
   
-#visualize gene expression
+  #visualize gene expression
   
   gene_names = reactive({
     if(is.null(ge_data())){
@@ -52,36 +52,36 @@ shinyServer(function(input, output, session){
     }
     withProgress(message = "Generating Data List for Gene Menue ", value = 0,{
       incProgress(0.59, detail = "Data for Genes....")
-    ge_data()$targetCount %>% pull(TargetName) %>% unique() %>% sort()
-  }) })
+      ge_data()$targetCount %>% pull(TargetName) %>% unique() %>% sort()
+    }) })
   
   output$choose_gene = renderUI({
     validate(need(length(gene_names())>1, ""))
     #genes = de_markers() %>% pull(gene)
     withProgress(message = "Generating Gene List ", value = 0,{
       incProgress(0.53, detail = "Data for Genes Plot.....")
-    selectInput('select_gene', "Select gene to view", choices = gene_names(), selected = gene_names()[1], multiple = F)
-  }) })
+      selectInput('select_gene', "Select gene to view", choices = gene_names(), selected = gene_names()[1], multiple = F)
+    }) })
   
   de_markers = reactive({
     withProgress(message = "Generating Data Sets for plotting ", value = 0,{
       incProgress(0.33, detail = "Data for SeuratObj Plot.....")
-    #list of dataframes for the different clusters differentially expressed genes
-    tmp = louvain_markers(roi()$seuratobj)
-    #assign("tmp", tmp, envir = .GlobalEnv)
-    return(tmp)
-  })
+      #list of dataframes for the different clusters differentially expressed genes
+      tmp = louvain_markers(roi()$seuratobj)
+      #assign("tmp", tmp, envir = .GlobalEnv)
+      return(tmp)
+    })
   })
   
   color_pal <- reactive({
     withProgress(message = "Choosing color pallet ", value = 0,{
       incProgress(0.23, detail = "Choosing colors....")
-    pallet = input$color_pallet
-    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  }) })
+      pallet = input$color_pallet
+      col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
+    }) })
   
   
-
+  
   # output$ge_plot <- renderPlot({
   #   col_pal = color_parse(color_pal = input$color_pallet, n_cats=8)
   #   
@@ -112,7 +112,7 @@ shinyServer(function(input, output, session){
     
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
-
+  
   output$ge_plot_interactive <- renderGirafe({
     col_pal = color_parse(color_pal = input$color_pallet, n_cats=5)
     
@@ -127,8 +127,8 @@ shinyServer(function(input, output, session){
     girafe(ggobj = p1)
     
   })
-
-#clustering page
+  
+  #clustering page
   
   
   color_pal_cluster <- reactive({
@@ -154,7 +154,7 @@ shinyServer(function(input, output, session){
     width  <- session$clientData$output_upload_image_preview_width
     
     list(src = img, contentType = "image/png")
-    }, deleteFile = T)
+  }, deleteFile = T)
   
   output$plot_image_preview <- renderImage({
     req(ge_image2())
@@ -164,6 +164,13 @@ shinyServer(function(input, output, session){
   }, deleteFile = T)
   
   output$cluster_image_preview <- renderImage({
+    req(ge_image2())
+    img = ge_image2()
+    
+    list(src = img, contentType = "image/png")
+  }, deleteFile = T)
+  
+  output$deconv_image_preview <- renderImage({
     req(ge_image2())
     img = ge_image2()
     
@@ -220,12 +227,12 @@ shinyServer(function(input, output, session){
   de_markers = reactive({
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Seurat Plot.....")
-    #list of dataframes for the different clusters differentially expressed genes
-    tmp = louvain_markers(roi()$seuratobj)
-  })
+      #list of dataframes for the different clusters differentially expressed genes
+      tmp = louvain_markers(roi()$seuratobj)
+    })
   })
   
-
+  
   tooltip_selected <- reactive({
     input$selected_tooltip
   })
@@ -244,7 +251,7 @@ shinyServer(function(input, output, session){
     ## Can I call output$roi_plot again here instead of the plot_clusters() call?
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
-    girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal_cluster(), tooltip = tooltip_selected()))
+      girafe(ggobj = plot_clusters_interactive(roi_df(), de_markers(), color_pal_cluster(), tooltip = tooltip_selected()))
     })
   })
   
@@ -271,23 +278,30 @@ shinyServer(function(input, output, session){
     spatialdecon_wrap(roi()$seuratobj)
   })
   
-  color_pallet_decon <- reactive({
-    pallet = input$color_pallet_decon
-    col_pal = color_parse(color_pal = pallet, n_cats=length(unique(roi_df()$cluster)))
-  })
+  # color_pallet_decon <- reactive({
+  #   pallet = input$color_pallet_decon
+  #   col_pal = color_parse(color_pal = pallet, n_cats=length(unique(rownames(spatial_decon()$beta))))
+  #   #names(col_pal) = unique(rownames(spatial_decon()$beta))
+  # })
   
   decon_spat <- reactive ({
     withProgress(message = "Generating Plot", value = 0,{
       incProgress(0.33, detail = "Interactive Plot.....")
-    
-    plot_cell_abund(
-      spatial_decon(), 
-      ge_data()$segment %>% filter(SlideName == input$selected_slide),
-      celltype = 'endothelial.cells',
-      col_pal = color_pallet_decon()
-    )
-    
-  }) })
+      
+      cellmask = spatial_decon()$prop_of_all 
+      cellmask = cellmask < 0.1
+      decon_df = spatial_decon()$beta
+      decon_df[cellmask] = 0
+      
+      plot_cell_abund(
+        decon_df, 
+        ge_data()$segment %>% filter(SlideName == input$selected_slide),
+        #celltype = 'endothelial.cells',
+        #col_pal = color_pallet_decon()
+        col_pal = color_parse('imola', ncats=18)
+      )
+      
+    }) })
   
   output$spatial_decon_plot <- renderPlot({
     decon_spat()

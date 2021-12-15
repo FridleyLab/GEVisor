@@ -207,24 +207,31 @@ ui = dashboardPage(
       ),
       tabItem(
         tabName = 'deconvolution',
-        h1("Deconvolution", align = "left"),
         br(),
-        
-        selectInput(
-          "color_pallet_decon",
-          "Choose Color Pallet",
-          choices = c(
-            "imola" = "imola",
-            "discrete rainbow" = "discrete_rainbow",
-            "Accent" = "Accent",
-            "sunset" = "sunset"
+        fluidRow(
+          # selectInput(
+          #   "color_pallet_decon",
+          #   "Choose Color Pallet",
+          #   choices = c(
+          #     "imola" = "imola",
+          #     "discrete rainbow" = "discrete_rainbow",
+          #     "Accent" = "Accent",
+          #     "sunset" = "sunset"
+          #   ),
+          #   selected = "imola"
+          # ),
+          box(
+            column(
+              width = 6,
+              plotOutput("spatial_decon_plot"),
+              downloadButton('downloadPlot2', 'Download Plot')
+            )
           ),
-          selected = "imola"
-        ),
-        
-        plotOutput("spatial_decon_plot"),
-        downloadButton('downloadPlot2', 'Download Plot')
-        
+          box(width = 6,
+              status = "primary",
+              imageOutput("deconv_image_preview", inline = T, width = "auto"),
+          )
+        )
       ),
       tabItem(
         tabName = 'spatial',
