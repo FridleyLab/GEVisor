@@ -6,39 +6,33 @@
 #
 #    http://shiny.rstudio.com/
 #
-# add for testing
-
-#
-
-#Melanoma was sox10 in the study for tumor stroma
-#nicks plotly sort
 
 ui = dashboardPage(
   dashboardHeader(title = "GEVisor"),
   dashboardSidebar(
     sidebarMenu(
       menuItem(
-        "Importing Data",
+        "1. Importing Data",
         tabName = 'import',
         icon = icon('upload')
       ),
       menuItem(
-        "GE Visualization",
+        "2. GE Visualization",
         tabName = 'visualization',
         icon = icon('dna')
       ),
       menuItem(
-        "GE Clustering",
+        "3. GE Clustering",
         tabName = 'clustering',
         icon = icon('glyphicon glyphicon-equalizer', lib='glyphicon')
       ),
       menuItem(
-        "GE Deconvolution",
+        "4. GE Deconvolution",
         tabName = 'deconvolution',
         icon = icon('circle')
       ),
       menuItem(
-        "Spatial Analysis",
+        "5. Spatial Analysis",
         tabName = 'spatial',
         icon = icon('map')
       ),
@@ -103,9 +97,17 @@ ui = dashboardPage(
       
       tabItem(
         tabName = 'visualization',
-        h1("Differential Gene Expression Visualization", align =
-             "left"),
         br(),
+        fluidRow(
+          box(
+            width = 12,
+            status = "primary",
+            column(
+              width = 12,
+              uiOutput("geneexpr_info")
+            )
+          )
+        ),
         fluidRow(
           width = 12,
           box(
@@ -114,83 +116,90 @@ ui = dashboardPage(
             uiOutput("choose_gene"),
             selectInput(
               "color_pallet",
-              "Choose Color Pallet",
+              "Choose color palette",
               choices = c(
-                "imola" = "imola",
-                "discrete rainbow" = "discrete_rainbow",
-                "Accent" = "Accent",
-                "sunset" = "sunset"
+                "Yellow/Orange" = "YlOrBr",
+                "Discrete Rainbow" = "discrete_rainbow",
+                "Blue/Red" = "BuRd",
+                "Sunset" = "sunset"
               ),
-              selected = "imola"
+              selected = "sunset"
             ),
             
             girafeOutput("ge_plot_interactive")
           ),
           box(width = 6,
               status = "primary",
-              br(),
-              br(),
-              br(),
-              br(),
-              br(),
-              br(),
-              br(),
               imageOutput("ge_image_preview", inline = T, width = "auto"),
-              )
+          )
         )
-        
       ),
       
       tabItem(
         tabName = 'clustering',
-        h1("Gene Expression Clustering", align = "left"),
         br(),
+        fluidRow(
+          box(
+            width = 12,
+            status = "primary",
+            column(
+              width = 12,
+              uiOutput("clusterpage_info")
+            )
+          )
+        ),
         fluidRow(
           column(
             width = 6,
             girafeOutput("roi_plot_girafe"),
-            sliderInput(
-              "r",
-              "Resolution",
-              min = 0.3,
-              max = 3.0,
-              value = 0.8
-            ),
-            sliderInput(
-              "features",
-              "Features",
-              min = 1500,
-              max = 3000,
-              value = 2000
-            ),
-            sliderInput(
-              "npcs",
-              "PC",
-              min = 20,
-              max = 70,
-              value = 30
-            ),
-            selectInput(
-              "color_pallet_cluster",
-              "Choose Color Pallet",
-              choices = c(
-                "imola" = "imola",
-                "discrete rainbow" = "discrete_rainbow",
-                "Accent" = "Accent"
-              ),
-              selected = "imola"
-            ),
-            uiOutput("choose_tooltip"),
-            # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
           ),
+          box(width = 6,
+              status = "primary",
+              imageOutput("plot_image_preview", inline = T, width = "auto"),
+          ),
+        ),
+        fluidRow(
+          box(
+          textInput(
+            "r",
+            "Resolution",
+            value = "0.8",
+            width = "50%"
+          ),
+          textInput(
+            "features",
+            "Features",
+            value = "2000",
+            width = "50%"
+          ),
+          textInput(
+            "npcs",
+            "PCs",
+            value = 30,
+            width = "50%"
+          ),
+          selectInput(
+            "color_pallet_cluster",
+            "Choose color palette",
+            choices = c(
+              "Okabe-Ito" = "okabe ito",
+              "Discrete Rainbow" = "discrete_rainbow",
+              "Muted" = "muted",
+              "Light" = "light"
+            ),
+            selected = "discrete_rainbow"
+          ),
+          uiOutput("choose_tooltip"),
+          # div(style = 'overflow-x: scroll; overflow-y: scroll; height:500px; white-space: nowrap', tableOutput('ge_data_preview')),
+        ),
           box(
             #id = "image_cluster_container",
             width = 6,
             column(
               width = 12,
               downloadButton('downloadPlot', 'Download Plot'),
-              imageOutput("plot_image_preview", inline = T),
-              br(),
+              # imageOutput("plot_image_preview", inline = T),
+              # br(),
               plotOutput("cluster_umap")
             )
           )

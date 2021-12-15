@@ -1,7 +1,7 @@
 ---
 title: "Getting Started with GEVisor"
-author: "Alex Soupir"
-date: "8/11/2021"
+author: "Oscar Ospina"
+date: "12/15/2021"
 output: 
   html_document:
     mathjax: local

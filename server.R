@@ -60,7 +60,7 @@ shinyServer(function(input, output, session){
     #genes = de_markers() %>% pull(gene)
     withProgress(message = "Generating Gene List ", value = 0,{
       incProgress(0.53, detail = "Data for Genes Plot.....")
-    selectInput('select_gene', "Select Gene to View", choices = gene_names(), selected = gene_names()[1], multiple = F)
+    selectInput('select_gene', "Select gene to view", choices = gene_names(), selected = gene_names()[1], multiple = F)
   }) })
   
   de_markers = reactive({
@@ -163,7 +163,12 @@ shinyServer(function(input, output, session){
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
   
-  
+  output$cluster_image_preview <- renderImage({
+    req(ge_image2())
+    img = ge_image2()
+    
+    list(src = img, contentType = "image/png")
+  }, deleteFile = T)
   
   roi = reactive({
     withProgress(message = "Generating Data Sets for plotting ", value = 0,{
@@ -171,9 +176,9 @@ shinyServer(function(input, output, session){
       
       df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
       df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
-      nfeatures = input$features
-      npcs = input$npcs
-      r = input$r
+      nfeatures = as.integer(input$features)
+      npcs = as.integer(input$npcs)
+      r = as.double(input$r)
       
       df_spatial = ge_data()$segment %>% filter(SlideName == input$selected_slide)
       df = ge_data()$targetCount %>% select(contains("TargetName"),contains(unique(df_spatial$ScanLabel)))
@@ -207,7 +212,7 @@ shinyServer(function(input, output, session){
     
     res = dplyr::full_join(res, topgenes, by='cluster')
     col_names = colnames(res)
-    selectInput("selected_tooltip", "Choose Tooltip to be plotted",
+    selectInput("selected_tooltip", "Choose annotation to be shown on hover",
                 choices = col_names,
                 selected = col_names[length(col_names)])
   })
@@ -332,6 +337,22 @@ shinyServer(function(input, output, session){
   output$inputpage_info <- renderUI({
     withMathJax({
       k = knitr::knit(input = "inputpage_info.rmd", quiet=T)
+      HTML(markdown::markdownToHTML(k, fragment.only=T))
+    })
+  })
+  
+  # Show info on the gene expressio visualization page
+  output$geneexpr_info <- renderUI({
+    withMathJax({
+      k = knitr::knit(input = "geneexpr_info.rmd", quiet=T)
+      HTML(markdown::markdownToHTML(k, fragment.only=T))
+    })
+  })
+  
+  # Show info on the clustering module page
+  output$clusterpage_info <- renderUI({
+    withMathJax({
+      k = knitr::knit(input = "clusterpage_info.rmd", quiet=T)
       HTML(markdown::markdownToHTML(k, fragment.only=T))
     })
   })

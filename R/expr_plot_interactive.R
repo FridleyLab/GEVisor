@@ -3,8 +3,9 @@
 #
 
 expr_plot_interactive = function(df, df_spatial, gene, col_pal){
-  
+
   # Calculate (spot) library sizes. Then, add 1 to each library size.
+  df[is.na(df)] = 0
   libsizes = colSums(df[, -1], na.rm=T)
   
   # Filterv out zero count spots
