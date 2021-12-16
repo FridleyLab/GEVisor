@@ -209,6 +209,16 @@ ui = dashboardPage(
         tabName = 'deconvolution',
         br(),
         fluidRow(
+          box(
+            width = 12,
+            status = "primary",
+            column(
+              width = 12,
+              uiOutput("deconvpage_info")
+            )
+          )
+        ),
+        fluidRow(
           # selectInput(
           #   "color_pallet_decon",
           #   "Choose Color Pallet",
@@ -221,8 +231,9 @@ ui = dashboardPage(
           #   selected = "imola"
           # ),
           box(
+            width = 6,
             column(
-              width = 6,
+              width = 12,
               plotOutput("spatial_decon_plot"),
               downloadButton('downloadPlot2', 'Download Plot')
             )

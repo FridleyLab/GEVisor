@@ -371,4 +371,12 @@ shinyServer(function(input, output, session){
     })
   })
   
+  # Show info on the clustering module page
+  output$deconvpage_info <- renderUI({
+    withMathJax({
+      k = knitr::knit(input = "deconv_info.rmd", quiet=T)
+      HTML(markdown::markdownToHTML(k, fragment.only=T))
+    })
+  })
+  
 })
