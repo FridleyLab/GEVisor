@@ -256,7 +256,8 @@ shinyServer(function(input, output, session){
   })
   
   umapSeaurat <- reactive({
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster())
+    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster()) +
+      ggplot2::coord_equal()
     
   })
   

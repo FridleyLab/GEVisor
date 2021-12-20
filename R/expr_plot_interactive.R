@@ -33,6 +33,8 @@ expr_plot_interactive = function(df, df_spatial, gene, col_pal){
     ggiraph::geom_point_interactive(ggplot2::aes(x=ROICoordinateX, y=ROICoordinateY, color=expr, tooltip = expr), size=3) +
     ggplot2::scale_color_gradientn(colors=col_pal) +
     ggtitle(paste0('log_expr ', gene)) +
+    ylab('y_pos') +
+    xlab('x_pos') +
     ggplot2::theme_classic() + 
     ggplot2::scale_y_reverse() +
     coord_equal()

@@ -12,27 +12,27 @@ ui = dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem(
-        "1. Importing Data",
+        "Importing Data",
         tabName = 'import',
         icon = icon('upload')
       ),
       menuItem(
-        "2. GE Visualization",
+        "1. GE Visualization",
         tabName = 'visualization',
         icon = icon('dna')
       ),
       menuItem(
-        "3. GE Clustering",
+        "2. GE Clustering",
         tabName = 'clustering',
         icon = icon('glyphicon glyphicon-equalizer', lib='glyphicon')
       ),
       menuItem(
-        "4. GE Deconvolution",
+        "3. GE Deconvolution",
         tabName = 'deconvolution',
         icon = icon('circle')
       ),
       menuItem(
-        "5. Spatial Analysis",
+        "4. Spatial Analysis",
         tabName = 'spatial',
         icon = icon('map')
       ),
@@ -59,7 +59,7 @@ ui = dashboardPage(
         fluidRow(
           box(
             width = 6,
-            status = "primary",
+            #status = "primary",
             column(
               width = 12,
               fileInput(
@@ -78,7 +78,7 @@ ui = dashboardPage(
           box(
             #id = "image_input_container",
             width = 6,
-            status = "primary",
+            #status = "primary",
             column(
               width = 12,
               fileInput(
@@ -112,7 +112,8 @@ ui = dashboardPage(
           width = 12,
           box(
             width = 6,
-            status = "primary",
+            #status = "primary",
+            girafeOutput("ge_plot_interactive"),
             uiOutput("choose_gene"),
             selectInput(
               "color_pallet",
@@ -125,11 +126,9 @@ ui = dashboardPage(
               ),
               selected = "sunset"
             ),
-            
-            girafeOutput("ge_plot_interactive")
           ),
           box(width = 6,
-              status = "primary",
+              #status = "primary",
               imageOutput("ge_image_preview", inline = T, width = "auto"),
           )
         )
@@ -149,12 +148,15 @@ ui = dashboardPage(
           )
         ),
         fluidRow(
-          column(
+          box(
             width = 6,
-            girafeOutput("roi_plot_girafe"),
+            column(
+              width = 12,
+              girafeOutput("roi_plot_girafe"),
+            )
           ),
           box(width = 6,
-              status = "primary",
+              #status = "primary",
               imageOutput("plot_image_preview", inline = T, width = "auto"),
           ),
         ),
