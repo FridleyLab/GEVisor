@@ -148,17 +148,22 @@ shinyServer(function(input, output, session){
     return(im2)
   })
   
+  ge_image4 = reactive({
+    if(is.null(input$mif_image_input)){
+      return()
+    }
+    im = magick::image_read(input$mif_image_input$datapath)
+    im2 = magick::image_resize(im, geometry = "500x500") %>%
+      image_write(tempfile(fileext='png'), format = 'png')
+    print(session$clientData$output$output_upload_image_preview_width)
+    #assign("session", session, envir = .GlobalEnv)
+    return(im2)
+  })
+  
   output$upload_image_preview <- renderImage({
     req(ge_image())
     img = ge_image()
     width  <- session$clientData$output_upload_image_preview_width
-    
-    list(src = img, contentType = "image/png")
-  }, deleteFile = T)
-  
-  output$plot_image_preview <- renderImage({
-    req(ge_image2())
-    img = ge_image2()
     
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
@@ -171,8 +176,8 @@ shinyServer(function(input, output, session){
   }, deleteFile = T)
   
   output$deconv_image_preview <- renderImage({
-    req(ge_image2())
-    img = ge_image2()
+    req(ge_image4())
+    img = ge_image4()
     
     list(src = img, contentType = "image/png")
   }, deleteFile = T)
@@ -256,9 +261,9 @@ shinyServer(function(input, output, session){
   })
   
   umapSeaurat <- reactive({
-    Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster()) +
+    umap_p = Seurat::DimPlot(roi()$seuratobj, reduction = "umap", pt.size = 3, cols = color_pal_cluster()) +
       ggplot2::coord_equal()
-    
+    umap_p
   })
   
   output$cluster_umap = renderPlot({

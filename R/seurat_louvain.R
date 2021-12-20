@@ -20,7 +20,6 @@ seurat_louvain = function(df=NULL, df_spatial=NULL, nfeatures=2000, npcs=30, r=0
   seurat_mtx = as.data.frame(df[, -1])
 
   rownames(seurat_mtx) = df[[1]]
-  seurat_mtx = seurat_mtx[, -1]
 
   SeuratObj = SeuratObject::CreateSeuratObject(seurat_mtx)
 

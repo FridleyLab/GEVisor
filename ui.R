@@ -157,7 +157,7 @@ ui = dashboardPage(
           ),
           box(width = 6,
               #status = "primary",
-              imageOutput("plot_image_preview", inline = T, width = "auto"),
+              imageOutput("cluster_image_preview", inline = T, width = "auto"),
           ),
         ),
         fluidRow(
@@ -200,8 +200,6 @@ ui = dashboardPage(
             column(
               width = 12,
               downloadButton('downloadPlot', 'Download Plot'),
-              # imageOutput("plot_image_preview", inline = T),
-              # br(),
               plotOutput("cluster_umap")
             )
           )
@@ -241,7 +239,7 @@ ui = dashboardPage(
             )
           ),
           box(width = 6,
-              status = "primary",
+              #status = "primary",
               imageOutput("deconv_image_preview", inline = T, width = "auto"),
           )
         )

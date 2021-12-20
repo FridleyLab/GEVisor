@@ -15,7 +15,7 @@ plot_clusters_interactive = function(res, markers, col_pal, tooltip = all){
   
   res = dplyr::full_join(res, topgenes, by='cluster')
   
-  col_pal = color_parse(col_pal, n_cats = nrow(topgenes))
+  col_pal = color_parse(col_pal, n_cats=length(unique(res$cluster)))
   
   p1 = ggplot2::ggplot(res) +
     ggiraph::geom_point_interactive(ggplot2::aes(x=x_pos, y=y_pos, color=cluster, tooltip = get(tooltip))) +
